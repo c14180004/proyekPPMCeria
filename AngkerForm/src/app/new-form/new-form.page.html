@@ -1,0 +1,178 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>newForm</ion-title>
+  </ion-toolbar>
+</ion-header>
+<!-- form edit -->
+<ion-content>
+  <div *ngIf="!preview; else lookPreview">
+    <ion-item>
+      <ion-button slot="end" color="warning" (click)="switchPreview()">Preview</ion-button>
+    </ion-item>
+    <ion-list>
+      <ion-item *ngFor="let item of formList;let j = index">
+        <div *ngIf="item.formType == 'Text'" style="width:100%">
+          <ion-item>
+          <ion-input [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="text" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[1]"></ion-input>
+          </ion-item>
+        </div>
+        <div *ngIf="item.formType == 'Number'" style="width:100%">
+            <ion-item>
+              <ion-input [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input type="text" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[1]"></ion-input>
+            </ion-item>
+        </div>
+        <div *ngIf="item.formType == 'Radio'">
+          <ion-item>
+          <ion-input [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion"></ion-input>
+          </ion-item>
+          <ion-radio-group>
+            <ion-item *ngFor="let itemValue of item.formValue;let i = index; trackBy:trackByFn">
+              <ion-radio slot="start" [(ngValue)]="item.formValue[i]"></ion-radio><ion-item><ion-input type="text" placeholder="value" [(ngModel)] = "item.formValue[i]" value="{{item.formValue[i]}}"></ion-input></ion-item>
+            </ion-item>
+          </ion-radio-group>
+          <ion-item>
+            <ion-button color="danger" (click)="removeListOption(j)">Remove Option</ion-button>
+            <ion-button color="success" (click)="addListOption(j)">Add Option</ion-button>
+          </ion-item>
+        </div>
+        <div *ngIf="item.formType == 'Checkbox'">
+          <ion-item>
+          <ion-input [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion"></ion-input>
+          </ion-item>
+          <ion-list>
+            <ion-item *ngFor="let itemValue of item.formValue;let i = index;trackBy:trackByFn ">
+              <ion-checkbox slot="start" [(ngValue)]="item.formValue[i]"></ion-checkbox><ion-item><ion-input type="text" placeholder="value" [(ngModel)]="item.formValue[i]"></ion-input></ion-item>
+            </ion-item>
+          </ion-list>
+          <ion-item>
+            <ion-button color="danger" (click)="removeListOption(j)">Remove Option</ion-button>
+            <ion-button color="success" (click)="addListOption(j)">Add Option</ion-button>
+          </ion-item>
+        </div>
+      </ion-item>
+  </ion-list>
+
+  <!-- select form type -->
+  <ion-item>
+    <ion-label>Popover</ion-label>
+    <ion-select [(ngModel)]="formType" interface="text">
+      <ion-select-option value="Text">Text</ion-select-option>
+      <ion-select-option value="Number">Number</ion-select-option>
+      <ion-select-option value="Radio">Radio</ion-select-option>
+      <ion-select-option value="Checkbox">Checkbox</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- add form -->
+  <ion-item>
+    <div *ngIf="formType == 'Text'" style="width:100%">
+      <ion-item>
+      <ion-input [(ngModel)]="formBox.formQuestion" type="text" placeholder="Question" value="formBox.formQuestion"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="text" placeholder="placeholder" [(ngModel)]="formBox.formValue[1]"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-button slot="end" color="primary" (click)="addFormBox()">Add Form</ion-button>
+      </ion-item>
+    </div>
+    <div *ngIf="formType == 'Number'" style="width:100%">
+      <ion-item>
+        <ion-input [(ngModel)]="formBox.formQuestion" type="text" placeholder="Question" value="formBox.formQuestion"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="text" placeholder="placeholder" [(ngModel)]="formBox.formValue[1]"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-button slot="end" color="primary" (click)="addFormBox()">Add Form</ion-button>
+      </ion-item>
+    </div>
+    <div *ngIf="formType == 'Radio'">
+      <ion-item>
+      <ion-input [(ngModel)]="formBox.formQuestion" type="text" placeholder="Question" value="formBox.formQuestion"></ion-input>
+      </ion-item>
+      <ion-radio-group>
+        <ion-item *ngFor="let itemValue of formBox.formValue;let i = index;trackBy:trackByFn ">
+          <ion-radio slot="start" [(ngValue)]="formBox.formValue[i]"></ion-radio><ion-item><ion-input type="text" placeholder="value" [(ngModel)]="formBox.formValue[i]"></ion-input></ion-item>
+        </ion-item>
+      </ion-radio-group>
+      <ion-item>
+        <ion-button color="danger" (click)="removeOption()">Remove Option</ion-button>
+        <ion-button color="success" (click)="addOption()">Add Option</ion-button>
+        <ion-button color="primary" (click)="addFormBox()">Add Form</ion-button>
+      </ion-item>
+    </div>
+    <div *ngIf="formType == 'Checkbox'">
+      <ion-item>
+      <ion-input [(ngModel)]="formBox.formQuestion" type="text" placeholder="Question" value="formBox.formQuestion"></ion-input>
+      </ion-item>
+      <ion-list>
+        <ion-item *ngFor="let itemValue of formBox.formValue;let i = index;trackBy:trackByFn ">
+          <ion-checkbox slot="start" [(ngValue)]="formBox.formValue[i]"></ion-checkbox><ion-item><ion-input type="text" placeholder="value" [(ngModel)]="formBox.formValue[i]"></ion-input></ion-item>
+        </ion-item>
+      </ion-list>
+      <ion-item>
+        <ion-button color="danger" (click)="removeOption()">Remove Option</ion-button>
+        <ion-button color="success" (click)="addOption()">Add Option</ion-button>
+        <ion-button color="primary" (click)="addFormBox()">Add Form</ion-button>
+      </ion-item>
+    </div>
+  </ion-item>
+</div>
+
+<!-- preview -->
+<ng-template #lookPreview>
+  <ion-item>
+    <ion-button slot="end" color="warning" (click)="switchPreview()">Edit</ion-button>
+  </ion-item>
+  <ion-list>
+    <ion-item *ngFor="let item of formList;let j = index">
+      <div *ngIf="item.formType == 'Text'" style="width:100%">
+        <ion-item>
+          <ion-label position="stacked">{{item.formQuestion}}</ion-label>
+          <ion-input type="text" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[0]"></ion-input>
+        </ion-item>
+      </div>
+      <div *ngIf="item.formType == 'Number'" style="width:100%">
+          <ion-item>
+            <ion-label position="stacked">{{item.formQuestion}}</ion-label>
+            <ion-input type="number" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[0]"></ion-input>
+          </ion-item>
+      </div>
+      <div *ngIf="item.formType == 'Radio'">
+        <ion-list>
+          <ion-radio-group>
+            <ion-list-header>
+              <ion-label>{{item.formQuestion}}</ion-label>
+            </ion-list-header>
+            <ion-item *ngFor="let itemValue of item.formValue;let i = index; trackBy:trackByFn">
+              <ion-label>{{item.formValue[i]}}</ion-label>
+              <ion-radio slot="start" [(ngValue)]="item.formValue[i]"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </div>
+      <div *ngIf="item.formType == 'Checkbox'">
+        <ion-list-header>
+          <ion-label>{{item.formQuestion}}</ion-label>
+        </ion-list-header>
+        <ion-list>
+          <ion-item *ngFor="let itemValue of item.formValue;let i = index;trackBy:trackByFn ">
+            <ion-label>{{item.formValue[i]}}</ion-label>
+            <ion-checkbox slot="start" [(ngValue)]="item.formValue[i]"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-item>
+  </ion-list>
+</ng-template>
+</ion-content>
