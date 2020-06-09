@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBox } from '../formBox.model';
+import { AlertController } from '@ionic/angular';
+import { UserService } from '../user.service';
+import { AngularFirestore } from '@angular/fire/firestore'
+import { AngularFireAuth } from '@angular/fire/auth';
+import { firestore } from 'firebase';
 
 @Component({
   selector: 'app-new-form',
@@ -7,11 +12,18 @@ import { FormBox } from '../formBox.model';
   styleUrls: ['./new-form.page.scss'],
 })
 export class NewFormPage implements OnInit {
+  formTitle: string;
+  formDesc: string;
   formBox: FormBox;
   formList: FormBox[] = [];
   formType: string;
   preview: boolean;
-  constructor() { }
+  constructor(
+    public afAuth: AngularFireAuth,
+    public afstore: AngularFirestore,
+    public user: UserService,
+    public alert: AlertController,
+  ) { }
   ngOnInit() {
     this.preview = false;
     this.formType = "Text"
@@ -53,5 +65,25 @@ export class NewFormPage implements OnInit {
     }else{
       this.preview = true;
     }
+  }
+  onChange(){
+    this.formBox = {
+      formType: this.formType,
+      formQuestion: "",
+      formValue:["",""]
+    }
+  }
+  createForm(){
+    const formTitle = this.formTitle;
+    const formDesc = this.formDesc;
+    const formList = this.formList;
+    
+    this.afstore.doc(`users/${this.user.getUID()}`).update({
+      form: firestore.FieldValue.arrayUnion({
+        formTitle,
+        formDesc,
+        formList
+      })
+    })
   }
 }

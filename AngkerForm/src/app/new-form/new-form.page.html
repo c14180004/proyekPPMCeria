@@ -12,6 +12,12 @@
     <ion-item>
       <ion-button slot="end" color="warning" (click)="switchPreview()">Preview</ion-button>
     </ion-item>
+    <ion-item>
+      <ion-input type="text" placeholder="Title" [(ngModel)]="formTitle"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-textarea placeholder="Enter more description here..." [(ngModel)]="formDesc"></ion-textarea>
+    </ion-item>
     <ion-list>
       <ion-item *ngFor="let item of formList;let j = index">
         <div *ngIf="item.formType == 'Text'" style="width:100%">
@@ -64,7 +70,7 @@
   <!-- select form type -->
   <ion-item>
     <ion-label>Popover</ion-label>
-    <ion-select [(ngModel)]="formType" interface="text">
+    <ion-select [(ngModel)]="formType" interface="text" (ionChange)="onChange()">
       <ion-select-option value="Text">Text</ion-select-option>
       <ion-select-option value="Number">Number</ion-select-option>
       <ion-select-option value="Radio">Radio</ion-select-option>
@@ -134,6 +140,12 @@
   <ion-item>
     <ion-button slot="end" color="warning" (click)="switchPreview()">Edit</ion-button>
   </ion-item>
+  <ion-item>
+    <h1>{{formTitle}}</h1>
+  </ion-item>
+  <ion-item>
+    <h3>{{formDesc}}</h3>>
+  </ion-item>
   <ion-list>
     <ion-item *ngFor="let item of formList;let j = index">
       <div *ngIf="item.formType == 'Text'" style="width:100%">
@@ -175,4 +187,5 @@
     </ion-item>
   </ion-list>
 </ng-template>
+<ion-button expand="block" color="secondary" (click)="createForm()">Create Form</ion-button>
 </ion-content>
