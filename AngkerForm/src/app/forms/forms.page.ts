@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-forms',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FormsPage implements OnInit {
 
-  constructor() { }
+  userDoc: AngularFirestoreDocument;
+  sub;
+  forms;
+
+  constructor(private afstore: AngularFirestore, private user: UserService) { 
+    this.userDoc = afstore.doc(`users/${this.user.getUID()}`);
+    this.sub = this.userDoc.valueChanges().subscribe(event => {
+      this.forms = event.form;
+    });
+  }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
 }

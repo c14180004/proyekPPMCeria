@@ -5,6 +5,18 @@
 </ion-header>
 
 <ion-content>
+  
+  <div id="forms">
+    <div class="forms" *ngFor="let form of forms"> <!-- Ini masih salah -->
+      <ion-item>
+        <h1>{{form.formTitle}}</h1>
+        <h3>{{form.formDesc}}</h3>>
+
+
+      </ion-item>
+    </div>
+  </div>
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button  [routerLink]="'/new-form'">
       <ion-icon name="add"></ion-icon>

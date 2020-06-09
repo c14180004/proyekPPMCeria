@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthService } from './auth.service';
 
 const routes: Routes = [
   {
@@ -17,10 +18,13 @@ const routes: Routes = [
   },
   {
     path: 'tabs',
-    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)
-  },  {
+    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule),
+    canActivate: [AuthService]
+  },
+  {
     path: 'new-form',
-    loadChildren: () => import('./new-form/new-form.module').then( m => m.NewFormPageModule)
+    loadChildren: () => import('./new-form/new-form.module').then( m => m.NewFormPageModule),
+    canActivate: [AuthService]
   }
 
 

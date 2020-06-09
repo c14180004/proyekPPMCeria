@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button defaultHref="tabs/forms"></ion-back-button>
     </ion-buttons>
     <ion-title>newForm</ion-title>
   </ion-toolbar>
@@ -13,10 +13,10 @@
       <ion-button slot="end" color="warning" (click)="switchPreview()">Preview</ion-button>
     </ion-item>
     <ion-item>
-      <ion-input type="text" placeholder="Title" [(ngModel)]="formTitle"></ion-input>
+      <ion-input type="text" placeholder="Title" [(ngModel)]="formTitle" required></ion-input>
     </ion-item>
     <ion-item>
-      <ion-textarea placeholder="Enter more description here..." [(ngModel)]="formDesc"></ion-textarea>
+      <ion-textarea placeholder="Enter more description here..." [(ngModel)]="formDesc" required></ion-textarea>
     </ion-item>
     <ion-list>
       <ion-item *ngFor="let item of formList;let j = index">
@@ -69,7 +69,7 @@
 
   <!-- select form type -->
   <ion-item>
-    <ion-label>Popover</ion-label>
+    <ion-label>Question Type</ion-label>
     <ion-select [(ngModel)]="formType" interface="text" (ionChange)="onChange()">
       <ion-select-option value="Text">Text</ion-select-option>
       <ion-select-option value="Number">Number</ion-select-option>
@@ -88,7 +88,7 @@
         <ion-input type="text" placeholder="placeholder" [(ngModel)]="formBox.formValue[1]"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-button slot="end" color="primary" (click)="addFormBox()">Add Form</ion-button>
+        <ion-button slot="end" color="primary" (click)="addFormBox()">Add Question</ion-button>
       </ion-item>
     </div>
     <div *ngIf="formType == 'Number'" style="width:100%">
@@ -99,7 +99,7 @@
           <ion-input type="text" placeholder="placeholder" [(ngModel)]="formBox.formValue[1]"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-button slot="end" color="primary" (click)="addFormBox()">Add Form</ion-button>
+          <ion-button slot="end" color="primary" (click)="addFormBox()">Add Question</ion-button>
       </ion-item>
     </div>
     <div *ngIf="formType == 'Radio'">
@@ -114,7 +114,7 @@
       <ion-item>
         <ion-button color="danger" (click)="removeOption()">Remove Option</ion-button>
         <ion-button color="success" (click)="addOption()">Add Option</ion-button>
-        <ion-button color="primary" (click)="addFormBox()">Add Form</ion-button>
+        <ion-button color="primary" (click)="addFormBox()">Add Question</ion-button>
       </ion-item>
     </div>
     <div *ngIf="formType == 'Checkbox'">
@@ -129,7 +129,7 @@
       <ion-item>
         <ion-button color="danger" (click)="removeOption()">Remove Option</ion-button>
         <ion-button color="success" (click)="addOption()">Add Option</ion-button>
-        <ion-button color="primary" (click)="addFormBox()">Add Form</ion-button>
+        <ion-button color="primary" (click)="addFormBox()">Add Question</ion-button>
       </ion-item>
     </div>
   </ion-item>
