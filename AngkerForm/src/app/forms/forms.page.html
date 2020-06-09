@@ -6,19 +6,31 @@
 
 <ion-content>
   
+  <app-loading *ngIf="!userForms"></app-loading>
+
   <div id="forms">
-    <div class="forms" *ngFor="let form of forms"> <!-- Ini masih salah -->
+    <ion-list class="forms" *ngFor="let form of userForms; let i = index">
+
       <ion-item>
-        <h1>{{form.formTitle}}</h1>
-        <h3>{{form.formDesc}}</h3>>
+        <ion-label>
+          <ion-row>
+            {{form.formTitle}}
+          </ion-row>
+          <ion-row>
+            {{form.formDesc}}
+          </ion-row>
 
-
+          <ion-row>
+            Form code: {{this.userFormCodes[i]}}
+          </ion-row>
+        </ion-label>
       </ion-item>
-    </div>
+
+    </ion-list>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button  [routerLink]="'/new-form'">
+    <ion-fab-button [routerLink]="'/new-form'">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

@@ -74,18 +74,16 @@ export class NewFormPage implements OnInit {
     }
   }
   createForm(){
-    const formURL = "URLSementaraGtwCaraGenerate";
+    const formCode = "TempCode";
     const formTitle = this.formTitle;
     const formDesc = this.formDesc;
     const formList = this.formList;
     
     this.afstore.doc(`users/${this.user.getUID()}`).update({
-      form: firestore.FieldValue.arrayUnion({
-        formURL
-      })
+      forms: firestore.FieldValue.arrayUnion(formCode)
     })
 
-    this.afstore.doc(`forms/${formURL}`).set({
+    this.afstore.doc(`forms/${formCode}`).set({
       author: this.user.getUsername(),
       formTitle,
       formDesc,

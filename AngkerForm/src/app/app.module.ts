@@ -14,6 +14,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule} from '@angular/fire/auth'
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
+import { SharedModule } from './shared.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +24,8 @@ import { AuthService } from './auth.service';
     IonicModule.forRoot(), 
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    SharedModule
   ],
   providers: [
     StatusBar,
