@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>isiForm</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-template [ngIf]="(formDocData | async)">
+  <ion-item>
+    <h1>{{form.formTitle}}</h1>
+  </ion-item>
+  <ion-item>
+    <p>{{form.formDesc}}</p>
+  </ion-item>
+  <ion-list>
+    <ion-item *ngFor="let item of form.formList;let j = index">
+      <div *ngIf="item.formType == 'Text'" style="width:100%">
+        <ion-item>
+          <ion-label position="stacked">{{item.formQuestion}}</ion-label>
+          <ion-input type="text" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[0]"></ion-input>
+        </ion-item>
+      </div>
+      <div *ngIf="item.formType == 'Number'" style="width:100%">
+          <ion-item>
+            <ion-label position="stacked">{{item.formQuestion}}</ion-label>
+            <ion-input type="number" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[0]"></ion-input>
+          </ion-item>
+      </div>
+      <div *ngIf="item.formType == 'Radio'">
+        <ion-list>
+          <ion-radio-group>
+            <ion-list-header>
+              <ion-label>{{item.formQuestion}}</ion-label>
+            </ion-list-header>
+            <ion-item *ngFor="let itemValue of item.formValue;let i = index; trackBy:trackByFn">
+              <ion-label>{{item.formValue[i]}}</ion-label>
+              <ion-radio slot="start" [(value)]="item.formValue[i]"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </div>
+      <div *ngIf="item.formType == 'Checkbox'">
+        <ion-list-header>
+          <ion-label>{{item.formQuestion}}</ion-label>
+        </ion-list-header>
+        <ion-list>
+          <ion-item *ngFor="let itemValue of item.formValue;let i = index;trackBy:trackByFn ">
+            <ion-label>{{item.formValue[i]}}</ion-label>
+            <ion-checkbox slot="start" [(value)]="item.formValue[i]"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="block" color="secondary" (click)="submit()">Submit</ion-button>
+  </ng-template>
+</ion-content>

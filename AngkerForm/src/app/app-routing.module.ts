@@ -25,7 +25,12 @@ const routes: Routes = [
     path: 'new-form',
     loadChildren: () => import('./new-form/new-form.module').then( m => m.NewFormPageModule),
     canActivate: [AuthService]
+  },
+  {
+    path: 'isi-form/:formID',
+    loadChildren: () => import('./isi-form/isi-form.module').then( m => m.IsiFormPageModule)
   }
+
 
 
 ];
