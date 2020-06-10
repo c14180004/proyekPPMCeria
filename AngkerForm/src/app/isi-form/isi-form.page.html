@@ -20,21 +20,21 @@
       <div *ngIf="item.formType == 'Text'" style="width:100%">
         <ion-item>
           <ion-label position="stacked">{{item.formQuestion}}</ion-label>
-          <ion-input type="text" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[0]"></ion-input>
+          <ion-input type="text" placeholder="{{item.formValue[1]}}" [(ngModel)]="formData[j].value"></ion-input>
         </ion-item>
       </div>
       <div *ngIf="item.formType == 'Number'" style="width:100%">
           <ion-item>
             <ion-label position="stacked">{{item.formQuestion}}</ion-label>
-            <ion-input type="number" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[0]"></ion-input>
+            <ion-input type="number" placeholder="{{item.formValue[1]}}" [(ngModel)]="formData[j].value"></ion-input>
           </ion-item>
       </div>
       <div *ngIf="item.formType == 'Radio'">
         <ion-list>
-          <ion-radio-group>
-            <ion-list-header>
-              <ion-label>{{item.formQuestion}}</ion-label>
-            </ion-list-header>
+          <ion-list-header>
+            <ion-label>{{item.formQuestion}}</ion-label>
+          </ion-list-header>
+          <ion-radio-group (ionChange)="radioAnswer(j,$event)">
             <ion-item *ngFor="let itemValue of item.formValue;let i = index; trackBy:trackByFn">
               <ion-label>{{item.formValue[i]}}</ion-label>
               <ion-radio slot="start" [(value)]="item.formValue[i]"></ion-radio>
@@ -49,10 +49,11 @@
         <ion-list>
           <ion-item *ngFor="let itemValue of item.formValue;let i = index;trackBy:trackByFn ">
             <ion-label>{{item.formValue[i]}}</ion-label>
-            <ion-checkbox slot="start" [(value)]="item.formValue[i]"></ion-checkbox>
+            <ion-checkbox slot="start" [(value)]="item.formValue[i]" (ionChange)="checkboxAnswer(j,$event)"></ion-checkbox>
           </ion-item>
         </ion-list>
       </div>
+      {{formData[j].value}}
     </ion-item>
   </ion-list>
   <ion-button expand="block" color="secondary" (click)="submit()">Submit</ion-button>

@@ -90,10 +90,7 @@ export class NewFormPage implements OnInit {
       author: this.user.getUsername(),
       formTitle,
       formDesc,
-      formList
-    })
-    this.afstore.doc(`answers/${formCode}`).set({
-      author: this.user.getUsername()
+      formList,
     })
     this.router.navigate(['./tabs'])
   }
