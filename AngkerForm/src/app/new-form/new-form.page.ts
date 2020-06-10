@@ -5,6 +5,7 @@ import { UserService } from '../user.service';
 import { AngularFirestore } from '@angular/fire/firestore'
 import { AngularFireAuth } from '@angular/fire/auth';
 import { firestore } from 'firebase';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-form',
@@ -23,6 +24,7 @@ export class NewFormPage implements OnInit {
     public afstore: AngularFirestore,
     public user: UserService,
     public alert: AlertController,
+    public router : Router
   ) { }
   ngOnInit() {
     this.preview = false;
@@ -74,11 +76,12 @@ export class NewFormPage implements OnInit {
     }
   }
   createForm(){
-    const formCode = "TempCode";
+    console.log(this.user.getUFAI());
+    const formCode = this.user.getUsername() + this.user.getUFAI();
     const formTitle = this.formTitle;
     const formDesc = this.formDesc;
     const formList = this.formList;
-    
+    this.user.updateUFAI();
     this.afstore.doc(`users/${this.user.getUID()}`).update({
       forms: firestore.FieldValue.arrayUnion(formCode)
     })
@@ -89,5 +92,9 @@ export class NewFormPage implements OnInit {
       formDesc,
       formList
     })
+    this.afstore.doc(`answers/${formCode}`).set({
+      author: this.user.getUsername()
+    })
+    this.router.navigate(['./tabs'])
   }
 }

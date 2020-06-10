@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { first } from 'rxjs/operators';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { firestore } from 'firebase';
+import { DocumentData } from '@angular/fire/firestore/interfaces';
 
 interface user {
     username: string,
@@ -10,9 +13,10 @@ interface user {
 @Injectable()
 export class UserService {
     private user: user
-
-    constructor (private afAuth: AngularFireAuth) {
-
+    private ufai: number
+    private ufaiData : DocumentData
+    constructor (private afAuth: AngularFireAuth,public afstore: AngularFirestore) {
+        
     }
 
     setUser(user: user) {
@@ -38,9 +42,21 @@ export class UserService {
                 username: user.email.split('@')[0],
                 uid: user.uid
             });
-
+            this.afstore.doc(`users/${this.user.uid}`).valueChanges().subscribe(async formAiData =>{
+                this.ufaiData = formAiData;
+                this.ufai = +this.ufaiData.formAi;
+                console.log(this.ufai)
+            })
             return true;
         }
         return false;
+    }
+    getUFAI() : number{
+        return this.ufai
+    }
+    updateUFAI(){
+        this.afstore.doc(`users/${this.user.uid}`).update({
+            formAi: (this.ufai + 1).toString()
+        })
     }
 }

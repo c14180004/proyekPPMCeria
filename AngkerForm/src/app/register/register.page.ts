@@ -31,6 +31,7 @@ export class RegisterPage implements OnInit {
 
   async register(){
     const { username, password, cpassword } = this;
+    const formAi = 1;
     if(password !== cpassword){
       this.presentAlert("Error!", "Passwords don't match");
       return console.error("Passwords don't match");
@@ -38,14 +39,14 @@ export class RegisterPage implements OnInit {
     
     try{
       const res = await this.afAuth.createUserWithEmailAndPassword(username + "@angker.com",password)
-      
       this.afstore.doc(`users/${res.user.uid}`).set({
-        username
+        username,
+        formAi
       });
 
       this.user.setUser({
         username,
-        uid: res.user.uid
+        uid: res.user.uid,
       });
 
       this.presentAlert("Success!", "Account has been registered.");

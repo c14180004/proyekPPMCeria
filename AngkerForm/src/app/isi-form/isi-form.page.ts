@@ -36,7 +36,7 @@ export class IsiFormPage implements OnInit {
     })
   }
   submit(){
-    
+
   }
 
 }
