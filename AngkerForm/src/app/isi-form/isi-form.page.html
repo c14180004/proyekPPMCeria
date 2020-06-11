@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button defaultHref="tabs/home"></ion-back-button>
     </ion-buttons>
     <ion-title>isiForm</ion-title>
   </ion-toolbar>
@@ -53,7 +53,6 @@
           </ion-item>
         </ion-list>
       </div>
-      {{formData[j].value}}
     </ion-item>
   </ion-list>
   <ion-button expand="block" color="secondary" (click)="submit()">Submit</ion-button>

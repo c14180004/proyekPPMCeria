@@ -28,8 +28,15 @@ const routes: Routes = [
   },
   {
     path: 'isi-form/:formID',
-    loadChildren: () => import('./isi-form/isi-form.module').then( m => m.IsiFormPageModule)
+    loadChildren: () => import('./isi-form/isi-form.module').then( m => m.IsiFormPageModule),
+    canActivate: [AuthService]
+  },
+  {
+    path: 'detail-form/:formID',
+    loadChildren: () => import('./detail-form/detail-form.module').then( m => m.DetailFormPageModule),
+    canActivate: [AuthService]
   }
+
 
 
 

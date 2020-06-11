@@ -9,7 +9,7 @@
   <app-loading *ngIf="!userForms"></app-loading>
 
   <div id="forms">
-    <ion-list class="forms" *ngFor="let form of userForms; let i = index">
+    <ion-list class="forms" *ngFor="let form of userForms; let i = index" (click)="clickForm(this.userFormCodes[i])">
 
       <ion-item>
         <ion-label>

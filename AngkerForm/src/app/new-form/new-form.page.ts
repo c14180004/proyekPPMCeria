@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBox } from '../formBox.model';
+import { FormModel } from '../formModel.model';
 import { AlertController } from '@ionic/angular';
 import { UserService } from '../user.service';
 import { AngularFirestore } from '@angular/fire/firestore'
@@ -19,6 +20,9 @@ export class NewFormPage implements OnInit {
   formList: FormBox[] = [];
   formType: string;
   preview: boolean;
+
+  newForm: FormModel;
+
   constructor(
     public afAuth: AngularFireAuth,
     public afstore: AngularFirestore,
@@ -77,21 +81,24 @@ export class NewFormPage implements OnInit {
   }
   createForm(){
     console.log(this.user.getUFAI());
-    const formCode = this.user.getUsername() + this.user.getUFAI();
-    const formTitle = this.formTitle;
-    const formDesc = this.formDesc;
-    const formList = this.formList;
+    
+    const formCode = this.user.getUsername() + "_" + this.user.getUFAI();
+    
+    this.newForm = {
+      author: this.user.getUsername(),
+      formTitle: this.formTitle,
+      formDesc: this.formDesc,
+      formList: this.formList,
+      formResponses: []
+    }
+
     this.user.updateUFAI();
+    
     this.afstore.doc(`users/${this.user.getUID()}`).update({
       forms: firestore.FieldValue.arrayUnion(formCode)
     })
 
-    this.afstore.doc(`forms/${formCode}`).set({
-      author: this.user.getUsername(),
-      formTitle,
-      formDesc,
-      formList,
-    })
-    this.router.navigate(['./tabs'])
+    this.afstore.doc(`forms/${formCode}`).set(this.newForm)
+    this.router.navigate(['./tabs/forms'])
   }
 }

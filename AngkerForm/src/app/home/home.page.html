@@ -7,6 +7,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+
+  <app-loading *ngIf="!formCollectionData"></app-loading>
+  
   <div id="forms">
     <ion-list>
 
@@ -23,4 +26,10 @@
 
     </ion-list>
   </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="'/new-form'">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

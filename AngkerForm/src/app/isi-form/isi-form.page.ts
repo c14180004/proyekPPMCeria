@@ -20,8 +20,9 @@ export class IsiFormPage implements OnInit {
   formDocData : Observable<DocumentData>;
   form : DocumentData;
   formData : any[];
+
   constructor(
-    private route:ActivatedRoute,
+    private route: ActivatedRoute,
     private afstore: AngularFirestore,
     public user: UserService
   ) {
@@ -49,14 +50,17 @@ export class IsiFormPage implements OnInit {
       
     })
   }
+
   submit(){
-    const answerId = this.formID + this.user.getUsername();
+    const answerId = this.formID + "-" + this.user.getUsername();
     const formData = this.formData;
+    
     this.afstore.doc(`forms/${this.formID}`).update({
-      formAnswers: firestore.FieldValue.arrayUnion(answerId)
+      formResponses: firestore.FieldValue.arrayUnion(answerId)
     })
-    this.afstore.doc(`answers/${answerId}`).set({
-      formData
+    this.afstore.doc(`responses/${answerId}`).set({
+      formData,
+      respondent: this.user.getUsername()
     })
   }
 
@@ -64,6 +68,7 @@ export class IsiFormPage implements OnInit {
     // console.log(event.detail.value);
     this.formData[index].value= event.detail.value
   }
+
   checkboxAnswer(index,event){
     var cbAnswer = this.formData[index].value;
     if(!cbAnswer.includes(event.detail.value)){

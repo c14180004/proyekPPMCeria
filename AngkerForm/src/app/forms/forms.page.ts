@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, DocumentData } from '@angular/fire/firestore';
 import { UserService } from '../user.service';
 import { Observable } from 'rxjs';
-import { FormBox } from '../formBox.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forms',
@@ -19,7 +19,7 @@ export class FormsPage implements OnInit {
   userFormDocData : Observable<DocumentData>[];
   userForms : DocumentData[];
 
-  constructor(private afstore: AngularFirestore, private user: UserService) { 
+  constructor(private afstore: AngularFirestore, private user: UserService, private router : Router) { 
     this.userDoc = afstore.doc(`users/${this.user.getUID()}`);
 
     this.userDocData = this.userDoc.valueChanges();
@@ -45,6 +45,10 @@ export class FormsPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  clickForm(id:string){
+    this.router.navigate(['/detail-form',id])
   }
 
 }
