@@ -27,7 +27,7 @@ export class DetailFormPage implements OnInit {
   }
 
   ngOnInit() {
-
+    
   }
 
   ionViewWillEnter(){

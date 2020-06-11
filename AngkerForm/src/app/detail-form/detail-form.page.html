@@ -9,10 +9,10 @@
 
 <ion-content>
 
-  <app-loading *ngIf="!formData"></app-loading>
+  <app-loading *ngIf="!(formDocData | async)"></app-loading>
 
-  <div>
-    <!-- <h1>{{this.formData.formTitle}}</h1> -->
+  <div *ngIf="(formDocData | async)">
+    <h1>{{this.formData.formTitle}}</h1>
   </div>
 
 </ion-content>
