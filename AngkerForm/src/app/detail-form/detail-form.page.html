@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="tabs/forms"></ion-back-button>
     </ion-buttons>
-    <ion-title>detail-form</ion-title>
+    <ion-title>Detail Form</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,7 +12,48 @@
   <app-loading *ngIf="!(formDocData | async)"></app-loading>
 
   <div *ngIf="(formDocData | async)">
-    <h1>{{this.formData.formTitle}}</h1>
+
+    <div class="ion-padding">
+      <center>
+        <ion-text color="medium">
+          <p class="ion-no-margin">Title:</p>
+        </ion-text>
+        <h1 class="ion-no-margin ion-margin-bottom">{{this.formData.formTitle}}</h1>
+
+        <ion-text color="medium">
+          <p class="ion-no-margin" color="medium">Description:</p>
+        </ion-text>
+        <h3 class="ion-no-margin ion-margin-bottom">{{this.formData.formDesc}}</h3>
+        
+        <ion-text color="medium">
+          <p class="ion-no-margin">Form code:</p>
+        </ion-text>
+        <h5 class="ion-no-margin ion-margin-bottom">{{this.formID}}</h5>
+    </center>
+      
+      <ion-list class="ion-margin-top">
+        <ion-list-header>
+          <h5 class="ion-no-margin">
+            Responses
+          </h5>
+          &nbsp;&nbsp;
+          <ion-badge color="primary">{{this.formData.formResponses.length}}</ion-badge>
+        </ion-list-header>
+        
+        <app-loading *ngIf="!responseData"></app-loading>
+
+        <center><ion-label *ngIf="(responseData.length == 0)">Responses will be listed here.</ion-label></center>
+
+        <ion-item *ngFor="let response of responseData; let i = index" (click)="clickResponse(this.responses[i])">
+          <ion-label>
+            <ion-row>Respondent:</ion-row>
+            <ion-row>{{response.respondent}}</ion-row>
+          </ion-label>
+        </ion-item>
+  
+      </ion-list>
+    </div>
+
   </div>
 
 </ion-content>

@@ -18,6 +18,12 @@ export class DetailFormPage implements OnInit {
 
   formData : FormModel;
 
+  responseDoc : AngularFirestoreDocument[];
+  responseDocData : Observable<DocumentData>[];
+
+  responseData : DocumentData[];
+  responses : string[];
+
   constructor(
     private route: ActivatedRoute,
     private afstore: AngularFirestore,
@@ -41,12 +47,25 @@ export class DetailFormPage implements OnInit {
       this.formDocData = this.formDoc.valueChanges();
       this.formDocData.subscribe(form => {
         this.formData = form;
-        console.log(this.formData); //Di sini bisa
+
+        this.responseDoc = [];
+        this.responseDocData = [];
+        this.responseData = [];
+        this.responses = this.formData.formResponses;
+
+        for (let i = 0; i < this.formData.formResponses.length; i++) {
+          this.responseDoc[i] = this.afstore.doc(`responses/${this.formData.formResponses[i]}`);
+          this.responseDocData[i] = this.responseDoc[i].valueChanges();
+    
+          this.responseDocData[i].subscribe(response => {
+            this.responseData[i] = response;
+          })
+        }
+
       })
       
     })
     
-    console.log(this.formData); //Di sini sudah hilang
   }
 
 }
