@@ -35,7 +35,11 @@ const routes: Routes = [
     path: 'detail-form/:formID',
     loadChildren: () => import('./detail-form/detail-form.module').then( m => m.DetailFormPageModule),
     canActivate: [AuthService]
+  },  {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   }
+
 
 
 

@@ -4,6 +4,8 @@ import { first } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { firestore } from 'firebase';
 import { DocumentData } from '@angular/fire/firestore/interfaces';
+import { auth } from 'firebase/app'
+import * as firebase from 'firebase';
 
 interface user {
     username: string,
@@ -30,7 +32,15 @@ export class UserService {
     getUsername(): string {
         return this.user.username;
     }
-
+    reAuth(username: string, password: string){
+        const user = firebase.auth().currentUser;
+        const credential = firebase.auth.EmailAuthProvider.credential(username + '@angker.com',password);
+        return user.reauthenticateWithCredential(credential);
+    }
+    updatePassword(newpassword: string){
+        const user = firebase.auth().currentUser;
+        return user.updatePassword(newpassword)
+    }
     async isAuthenticated() {
         if (this.user) {
             return true;
