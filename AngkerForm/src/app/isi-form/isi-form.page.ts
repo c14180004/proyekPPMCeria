@@ -8,6 +8,7 @@ import { firestore } from 'firebase';
 import { Router } from '@angular/router';
 import { FormBox } from '../formBox.model';
 import { throwIfEmpty } from 'rxjs/operators';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-isi-form',
@@ -21,10 +22,14 @@ export class IsiFormPage implements OnInit {
   form : DocumentData;
   formData : any[];
 
+  answerID : string;
+
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private afstore: AngularFirestore,
-    public user: UserService
+    public user: UserService,
+    public alert: AlertController
   ) {
   }
 
@@ -48,20 +53,32 @@ export class IsiFormPage implements OnInit {
         console.log(this.formData);
       })
       
+      this.answerID = this.formID + "-" + this.user.getUsername();
+      this.afstore.firestore.doc(`responses/${this.answerID}`).get().then(
+        docSnapshot => {
+          if (docSnapshot.exists) {
+            this.presentAlert("You have already responded to this form!", "Submitting another response will replace your previous response.");
+          }
+        }
+      );
+
     })
   }
 
   submit(){
-    const answerId = this.formID + "-" + this.user.getUsername();
     const formData = this.formData;
-    
+
     this.afstore.doc(`forms/${this.formID}`).update({
-      formResponses: firestore.FieldValue.arrayUnion(answerId)
+      formResponses: firestore.FieldValue.arrayUnion(this.answerID)
     })
-    this.afstore.doc(`responses/${answerId}`).set({
+    this.afstore.doc(`responses/${this.answerID}`).set({
       formData,
       respondent: this.user.getUsername()
     })
+
+    this.presentAlert("Success!", "Your response has been submitted.");
+
+    this.router.navigate(['/tabs/home']);
   }
 
   radioAnswer(index,event) {
@@ -80,4 +97,13 @@ export class IsiFormPage implements OnInit {
     console.log(this.formData[index].value)
   }
 
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alert.create({
+      header,
+      message,
+      buttons: ["OK"]
+    })
+
+    await alert.present();
+  }
 }
