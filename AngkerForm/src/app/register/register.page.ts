@@ -17,7 +17,10 @@ export class RegisterPage implements OnInit {
   username: string = ""
   password: string = ""
   cpassword: string = ""
-
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+  cpasswordType: string = 'password';
+  cpasswordIcon: string = 'eye-off';
   constructor(
     public afAuth: AngularFireAuth,
     public afstore: AngularFirestore,
@@ -67,6 +70,15 @@ export class RegisterPage implements OnInit {
     })
 
     await alert.present();
+  }
+
+  hideShowPassword() {
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
+  hideShowCPassword() {
+    this.cpasswordType = this.cpasswordType === 'text' ? 'password' : 'text';
+    this.cpasswordIcon = this.cpasswordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 
 }

@@ -13,6 +13,8 @@ import { AlertController } from '@ionic/angular';
 export class LoginPage implements OnInit {
   username: string = ""
   password: string = ""
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
   constructor(
     public afAuth: AngularFireAuth,
     public user: UserService,
@@ -32,6 +34,8 @@ export class LoginPage implements OnInit {
             username,
             uid: res.user.uid
           });
+          this.username=""
+          this.password=""
           this.router.navigate(['/tabs']);
       }
 
@@ -54,6 +58,14 @@ export class LoginPage implements OnInit {
     })
 
     await alert.present();
+  }
+  hideShowPassword() {
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
+
+  goRegister(){
+    this.router.navigate(['/register']);
   }
 
 }

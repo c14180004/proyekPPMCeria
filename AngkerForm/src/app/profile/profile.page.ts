@@ -17,6 +17,12 @@ export class ProfilePage implements OnInit {
   newPassword: string;
   cNewPassword: string;
   password: string;
+  passwordType: string = 'password';
+  passwordIcon: string = 'eye-off';
+  newPasswordType: string = 'password';
+  newPasswordIcon: string = 'eye-off';
+  cNewPasswordType: string = 'password';
+  cNewPasswordIcon: string = 'eye-off';
   constructor(
     public afAuth: AngularFireAuth,
     private afstore: AngularFirestore,
@@ -37,6 +43,9 @@ export class ProfilePage implements OnInit {
   }
   showChangePassword(){
     if(this.showCP){
+      this.password = ""
+      this.newPassword = ""
+      this.cNewPassword = ""
       this.showCP = false;
     }else{
       this.showCP = true;
@@ -73,5 +82,18 @@ export class ProfilePage implements OnInit {
     })
 
     await alert.present();
+  }
+
+  hideShowPassword() {
+    this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
+    this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
+  hideShowNewPassword() {
+    this.newPasswordType = this.newPasswordType === 'text' ? 'password' : 'text';
+    this.newPasswordIcon = this.newPasswordIcon === 'eye-off' ? 'eye' : 'eye-off';
+  }
+  hideShowCNewPassword() {
+    this.cNewPasswordType = this.cNewPasswordType === 'text' ? 'password' : 'text';
+    this.cNewPasswordIcon = this.cNewPasswordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 }

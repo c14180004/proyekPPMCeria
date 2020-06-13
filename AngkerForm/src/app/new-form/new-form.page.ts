@@ -20,7 +20,7 @@ export class NewFormPage implements OnInit {
   formList: FormBox[] = [];
   formType: string;
   preview: boolean;
-
+  cekForm: boolean;
   newForm: FormModel;
 
   constructor(
@@ -31,6 +31,7 @@ export class NewFormPage implements OnInit {
     public router : Router
   ) { }
   ngOnInit() {
+    this.cekForm = false;
     this.preview = false;
     this.formType = "Text"
     this.formBox = {
@@ -40,7 +41,7 @@ export class NewFormPage implements OnInit {
     }
   }
   addFormBox(){
-    
+    this.cekForm = true;
     this.formBox.formType = this.formType;
     this.formList.push(this.formBox);
     this.formBox = {

@@ -9,24 +9,27 @@
     <h1>{{username}}</h1>
     <ion-button *ngIf="!showCP; else cp" color="warning" (click)="showChangePassword()">Change Password</ion-button><br>
     <ng-template #cp>
-      <ion-list>
+      <form #form="ngForm" (ngSubmit)="changePassword()">
         <ion-item>
           <ion-label position="floating">Old Password</ion-label>
-          <ion-input type="password" [(ngModel)]="password"></ion-input>
+          <ion-input name="username" [type]="passwordType" [(ngModel)]="password" required></ion-input>
+          <ion-icon [name]="passwordIcon" class="passwordIcon" slot="end" (click)='hideShowPassword()'></ion-icon>
         </ion-item>
     
         <ion-item>
           <ion-label position="floating">New Password</ion-label>
-          <ion-input type="password" [(ngModel)]="newPassword"></ion-input>
+          <ion-input name="newPassword" [type]="newPasswordType" [(ngModel)]="newPassword" required></ion-input>
+          <ion-icon [name]="newPasswordIcon" class="passwordIcon" slot="end" (click)='hideShowNewPassword()'></ion-icon>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Confirm New Password</ion-label>
-          <ion-input type="password" [(ngModel)]="cNewPassword"></ion-input>
+          <ion-input name="cNewPassword" [type]="cNewPasswordType" [(ngModel)]="cNewPassword" required></ion-input>
+          <ion-icon [name]="cNewPasswordIcon" class="passwordIcon" slot="end" (click)='hideShowCNewPassword()'></ion-icon>
         </ion-item>
-    
-      </ion-list>
-      <ion-button fill="solid" color="dark" (click)="showChangePassword()">Cancel</ion-button>
-      <ion-button fill="solid" color="warning" (click)="changePassword()">Change Password</ion-button><br>
+        <ion-button fill="solid" color="dark" (click)="showChangePassword()">Cancel</ion-button>
+        <ion-button fill="solid" color="warning" (click)="changePassword()" [disabled]="!form.valid">Change Password</ion-button><br>
+      </form>
+      
     </ng-template>
     <ion-button color="danger" (click)="logout()">Logout</ion-button>
   </div>
