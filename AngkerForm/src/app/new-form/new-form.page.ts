@@ -22,6 +22,7 @@ export class NewFormPage implements OnInit {
   preview: boolean;
   cekForm: boolean;
   newForm: FormModel;
+  formCount: number;
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -31,6 +32,7 @@ export class NewFormPage implements OnInit {
     public router : Router
   ) { }
   ngOnInit() {
+    this.formCount = 0;
     this.cekForm = false;
     this.preview = false;
     this.formType = "Text"
@@ -49,7 +51,14 @@ export class NewFormPage implements OnInit {
       formQuestion: "",
       formValue:["",""]
     }
+    this.formCount = this.formCount + 1;
     console.log(this.formList);
+  }
+  removeFormBox(index){
+    this.formList.splice(index,1);
+    if(this.formList.length == 0){
+      this.cekForm = false;
+    }
   }
   addOption(){
     this.formBox.formValue.push("");

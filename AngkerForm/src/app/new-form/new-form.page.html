@@ -26,23 +26,29 @@
       <div *ngFor="let item of formList;let j = index">
         <ion-card *ngIf="item.formType == 'Text'">
           <ion-item>
-          <ion-input name="question" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
+          <ion-input name="question{{formCount}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-input type="text" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[1]" [ngModelOptions]="{standalone: true}"></ion-input>
           </ion-item>
+          <ion-item lines="none">
+            <ion-button slot="end" color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
+          </ion-item>
         </ion-card>
         <ion-card *ngIf="item.formType == 'Number'">
             <ion-item>
-              <ion-input name="question" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
+              <ion-input name="question{{formCount}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
             </ion-item>
             <ion-item>
               <ion-input type="text" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[1]" [ngModelOptions]="{standalone: true}"></ion-input>
             </ion-item>
+            <ion-item lines="none">
+              <ion-button slot="end" color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
+            </ion-item>
         </ion-card>
         <ion-card *ngIf="item.formType == 'Radio'">
           <ion-item>
-          <ion-input name="question" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
+          <ion-input name="question{{formCount}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
           </ion-item>
           <ion-radio-group>
             <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index; trackBy:trackByFn">
@@ -52,11 +58,12 @@
           <ion-item lines="none">
             <ion-button color="danger" (click)="removeListOption(j)">Remove Option</ion-button>
             <ion-button color="success" (click)="addListOption(j)">Add Option</ion-button>
+            <ion-button color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
           </ion-item>
         </ion-card>
         <ion-card *ngIf="item.formType == 'Checkbox'">
           <ion-item>
-          <ion-input name="question" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
+          <ion-input name="question{{formCount}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
           </ion-item>
           <ion-list>
             <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index;trackBy:trackByFn ">
@@ -66,6 +73,7 @@
           <ion-item lines="none">
             <ion-button color="danger" (click)="removeListOption(j)">Remove Option</ion-button>
             <ion-button color="success" (click)="addListOption(j)">Add Option</ion-button>
+            <ion-button color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
           </ion-item>
         </ion-card>
       </div>
