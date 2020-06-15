@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestoreDocument, DocumentData, AngularFirestore } from '@angular/fire/firestore';
-import { UserService } from '../user.service';
 import { Observable } from 'rxjs';
 import { FormModel } from '../formModel.model';
 
@@ -26,8 +25,8 @@ export class DetailFormPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private afstore: AngularFirestore,
-    public user: UserService
+    private router: Router,
+    private afstore: AngularFirestore
   ) {
 
   }
@@ -66,6 +65,10 @@ export class DetailFormPage implements OnInit {
       
     })
     
+  }
+
+  clickResponse(id:string){
+    this.router.navigate(['/response',id])
   }
 
 }

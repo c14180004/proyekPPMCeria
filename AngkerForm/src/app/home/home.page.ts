@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AngularFirestore, DocumentData, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { UserService } from '../user.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -30,6 +29,7 @@ export class HomePage {
       })
     )
   }
+  
   clickForm(id:string){
     this.router.navigate(['/isi-form',id])
   }

@@ -32,15 +32,18 @@ export class UserService {
     getUsername(): string {
         return this.user.username;
     }
+
     reAuth(username: string, password: string){
         const user = firebase.auth().currentUser;
         const credential = firebase.auth.EmailAuthProvider.credential(username + '@angker.com',password);
         return user.reauthenticateWithCredential(credential);
     }
+
     updatePassword(newpassword: string){
         const user = firebase.auth().currentUser;
         return user.updatePassword(newpassword)
     }
+
     async isAuthenticated() {
         if (this.user) {
             return true;
@@ -61,9 +64,11 @@ export class UserService {
         }
         return false;
     }
+
     getUFAI() : number{
         return this.ufai
     }
+    
     updateUFAI(){
         this.afstore.doc(`users/${this.user.uid}`).update({
             formAi: (this.ufai + 1).toString()

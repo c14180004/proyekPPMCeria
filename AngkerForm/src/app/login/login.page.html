@@ -1,11 +1,10 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding">
 
-<ion-content padding>
-  <form #form="ngForm" (ngSubmit)="login()">
+  <div class="ion-margin-top">
+    <h1 class="ion-text-center">Angker Form</h1>
+  </div>
+
+  <form #form="ngForm" (ngSubmit)="login()" class="ion-margin-top">
     <ion-item>
       <ion-label position="floating">Username</ion-label>
       <ion-input type="text" name="username" [(ngModel)]="username" required></ion-input>
@@ -16,6 +15,8 @@
       <ion-input [type]="passwordType" name="password" [(ngModel)]="password" required></ion-input>
       <ion-icon [name]="passwordIcon" class="passwordIcon" slot="end" (click)='hideShowPassword()'></ion-icon>
     </ion-item>
+
+    <br>
 
     <ion-button type="submit" fill="solid" expand="block" color="dark" [disabled]="!form.valid">Login</ion-button>
   </form>

@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs/forms"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Response</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-loading *ngIf="!(responseDocData | async)"></app-loading>
+  
+  <div *ngIf="(responseDocData | async)">
+    <ion-card color="tertiary">
+      <h1>Respondent: {{responseData.respondent}}</h1>
+    </ion-card>
+
+    <div *ngFor="let item of responseData.formData; let j = index">
+      <ion-card *ngIf="item.formType == 'Text'">
+        <ion-item>
+          <ion-label position="stacked">{{item.question}}</ion-label>
+          <ion-input type="text" value="{{item.value}}" disabled></ion-input>
+        </ion-item>
+      </ion-card>
+      <ion-card *ngIf="item.formType == 'Number'">
+          <ion-item>
+            <ion-label position="stacked">{{item.question}}</ion-label>
+            <ion-input type="number" value="{{item.value}}" disabled></ion-input>
+          </ion-item>
+      </ion-card>
+      <ion-card *ngIf="item.formType == 'Radio'">
+          <ion-label>{{item.question}}</ion-label>
+          <ion-radio-group value="{{item.value}}">
+            <ion-item lines="none">
+              <ion-label>{{item.value}}</ion-label>
+              <ion-radio slot="start" [(value)]="item.value" disabled></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+      </ion-card>
+      <ion-card *ngIf="item.formType == 'Checkbox'">
+          <ion-label>{{item.question}}</ion-label>
+          <ion-item lines="none" *ngFor="let itemValue of item.value;let i = index;">
+            <ion-label>{{item.value[i]}}</ion-label>
+            <ion-checkbox slot="start" [(value)]="item.value[i]" checked disabled></ion-checkbox>
+          </ion-item>
+      </ion-card>
+    </div>
+
+
+  </div>
+  
+</ion-content>

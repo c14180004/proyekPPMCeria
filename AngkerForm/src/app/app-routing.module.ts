@@ -40,7 +40,13 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule),
     canActivate: [AuthService]
+  },
+  {
+    path: 'response/:responseID',
+    loadChildren: () => import('./response/response.module').then( m => m.ResponsePageModule),
+    canActivate: [AuthService]
   }
+
 
 
 

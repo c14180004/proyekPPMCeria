@@ -24,6 +24,7 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
   }
+  
   async login(){
     const { username, password } = this
     try{

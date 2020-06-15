@@ -20,7 +20,14 @@ export class FormsPage implements OnInit {
   userForms : DocumentData[];
 
   constructor(private afstore: AngularFirestore, private user: UserService, private router : Router) { 
-    this.userDoc = afstore.doc(`users/${this.user.getUID()}`);
+
+  }
+
+  ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.userDoc = this.afstore.doc(`users/${this.user.getUID()}`);
 
     this.userDocData = this.userDoc.valueChanges();
 
@@ -32,7 +39,7 @@ export class FormsPage implements OnInit {
       this.userForms = [];
 
       for (let i = 0; i < this.userFormCodes.length; i++) {
-        this.userFormDoc[i] = afstore.doc(`forms/${this.userFormCodes[i]}`);
+        this.userFormDoc[i] = this.afstore.doc(`forms/${this.userFormCodes[i]}`);
         this.userFormDocData[i] = this.userFormDoc[i].valueChanges();
   
         this.userFormDocData[i].subscribe(form => {
@@ -41,10 +48,6 @@ export class FormsPage implements OnInit {
       }
 
     })
-
-  }
-
-  ngOnInit() {
   }
 
   clickForm(id:string){

@@ -48,7 +48,7 @@ export class IsiFormPage implements OnInit {
         this.form = formList;
         this.formData = []
         for(var i = 0;i<this.form.formList.length;i++){
-          this.formData.push({formType: this.form.formList[i].formType, question: this.form.formList[i].formQuestion,value: [""]});
+          this.formData.push({formType: this.form.formList[i].formType, question: this.form.formList[i].formQuestion,value: []});
         }
         console.log(this.formData);
       })

@@ -30,10 +30,14 @@ export class ProfilePage implements OnInit {
     public router: Router,
     public alert: AlertController
   ) { 
-    this.username = user.getUsername();
   }
 
   ngOnInit() {
+
+  }
+
+  ionViewWillEnter() {
+    this.username = this.user.getUsername();
     this.showCP = false;
   }
 
@@ -41,6 +45,7 @@ export class ProfilePage implements OnInit {
     this.afAuth.signOut();
     this.router.navigate(['../login']);
   }
+
   showChangePassword(){
     if(this.showCP){
       this.password = ""
@@ -62,12 +67,16 @@ export class ProfilePage implements OnInit {
     }
     try{
       await this.user.reAuth(this.user.getUsername(),this.password)
-      this.presentAlert("Success!","your password has been changed!")
     }catch{
       return this.presentAlert('Error!','Wrong Password')
     }
     if(this.newPassword){
-      await this.user.updatePassword(this.newPassword)
+      try{
+        await this.user.updatePassword(this.newPassword)
+        this.presentAlert("Success!","your password has been changed!")
+      } catch(error){
+        this.presentAlert("Error!", error.message);
+      }
     }
     this.password = ""
     this.newPassword = ""
