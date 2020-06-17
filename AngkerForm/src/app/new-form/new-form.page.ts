@@ -39,18 +39,16 @@ export class NewFormPage implements OnInit {
     this.formBox = {
       formType: "Text",
       formQuestion: "",
-      formValue:["",""] ,
+      formValue:[""]
     }
   }
   addFormBox(){
     this.cekForm = true;
     this.formBox.formType = this.formType;
     this.formList.push(this.formBox);
-    this.formBox = {
-      formType: "Text",
-      formQuestion: "",
-      formValue:["",""]
-    }
+    
+    this.onChange();
+
     this.formCount = this.formCount + 1;
     console.log(this.formList);
   }
@@ -86,7 +84,12 @@ export class NewFormPage implements OnInit {
     this.formBox = {
       formType: this.formType,
       formQuestion: "",
-      formValue:["",""]
+      formValue:[""]
+    }
+
+    if (this.formBox.formType == "Radio" || this.formBox.formType == "Checkbox")
+    {
+      this.formBox.formValue = ["", ""];
     }
   }
   createForm(){

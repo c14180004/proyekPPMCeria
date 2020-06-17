@@ -23,6 +23,12 @@ export class UserService {
 
     setUser(user: user) {
         this.user = user;
+
+        this.afstore.doc(`users/${this.user.uid}`).valueChanges().subscribe(async formAiData =>{
+            this.ufaiData = formAiData;
+            this.ufai = this.ufaiData.formAi;
+            console.log(this.ufai)
+        })
     }
 
     getUID(): string {
@@ -55,11 +61,6 @@ export class UserService {
                 username: user.email.split('@')[0],
                 uid: user.uid
             });
-            this.afstore.doc(`users/${this.user.uid}`).valueChanges().subscribe(async formAiData =>{
-                this.ufaiData = formAiData;
-                this.ufai = +this.ufaiData.formAi;
-                console.log(this.ufai)
-            })
             return true;
         }
         return false;
@@ -71,7 +72,7 @@ export class UserService {
     
     updateUFAI(){
         this.afstore.doc(`users/${this.user.uid}`).update({
-            formAi: (this.ufai + 1).toString()
+            formAi: this.ufai + 1
         })
     }
 }

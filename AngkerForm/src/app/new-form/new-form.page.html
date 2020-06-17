@@ -29,7 +29,7 @@
           <ion-input name="question{{formCount}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input type="text" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[1]" [ngModelOptions]="{standalone: true}"></ion-input>
+            <ion-input type="text" placeholder="placeholder" [(ngModel)]="item.formValue[0]" [ngModelOptions]="{standalone: true}"></ion-input>
           </ion-item>
           <ion-item lines="none">
             <ion-button slot="end" color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
@@ -40,7 +40,7 @@
               <ion-input name="question{{formCount}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input type="text" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[1]" [ngModelOptions]="{standalone: true}"></ion-input>
+              <ion-input type="text" placeholder="placeholder" [(ngModel)]="item.formValue[0]" [ngModelOptions]="{standalone: true}"></ion-input>
             </ion-item>
             <ion-item lines="none">
               <ion-button slot="end" color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
@@ -56,7 +56,7 @@
             </ion-item>
           </ion-radio-group>
           <ion-item lines="none">
-            <ion-button color="danger" (click)="removeListOption(j)">Remove Option</ion-button>
+            <ion-button color="danger" (click)="removeListOption(j)" [disabled]="(this.formList[j].formValue.length <= 1)">Remove Option</ion-button>
             <ion-button color="success" (click)="addListOption(j)">Add Option</ion-button>
             <ion-button color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
           </ion-item>
@@ -71,7 +71,7 @@
             </ion-item>
           </ion-list>
           <ion-item lines="none">
-            <ion-button color="danger" (click)="removeListOption(j)">Remove Option</ion-button>
+            <ion-button color="danger" (click)="removeListOption(j)" [disabled]="(this.formList[j].formValue.length <= 1)">Remove Option</ion-button>
             <ion-button color="success" (click)="addListOption(j)">Add Option</ion-button>
             <ion-button color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
           </ion-item>
@@ -96,7 +96,7 @@
         <ion-input [(ngModel)]="formBox.formQuestion" type="text" placeholder="Question" value="formBox.formQuestion" [ngModelOptions]="{standalone: true}"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input type="text" placeholder="placeholder" [(ngModel)]="formBox.formValue[1]" [ngModelOptions]="{standalone: true}"></ion-input>
+          <ion-input type="text" placeholder="placeholder" [(ngModel)]="formBox.formValue[0]" [ngModelOptions]="{standalone: true}"></ion-input>
         </ion-item>
         <ion-item lines="none">
           <ion-button slot="end" color="primary" (click)="addFormBox()">Add Question</ion-button>
@@ -107,7 +107,7 @@
           <ion-input [(ngModel)]="formBox.formQuestion" type="text" placeholder="Question" value="formBox.formQuestion" [ngModelOptions]="{standalone: true}"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input type="text" placeholder="placeholder" [(ngModel)]="formBox.formValue[1]" [ngModelOptions]="{standalone: true}"></ion-input>
+            <ion-input type="text" placeholder="placeholder" [(ngModel)]="formBox.formValue[0]" [ngModelOptions]="{standalone: true}"></ion-input>
           </ion-item>
           <ion-item lines="none">
             <ion-button slot="end" color="primary" (click)="addFormBox()">Add Question</ion-button>
@@ -123,7 +123,7 @@
           </ion-item>
         </ion-radio-group>
         <ion-item lines="none">
-          <ion-button color="danger" (click)="removeOption()">Remove Option</ion-button>
+          <ion-button color="danger" (click)="removeOption()" [disabled]="(this.formBox.formValue.length <= 1)">Remove Option</ion-button>
           <ion-button color="success" (click)="addOption()">Add Option</ion-button>
           <ion-button color="primary" (click)="addFormBox()">Add Question</ion-button>
         </ion-item>
@@ -138,7 +138,7 @@
           </ion-item>
         </ion-list>
         <ion-item lines="none">
-          <ion-button color="danger" (click)="removeOption()">Remove Option</ion-button>
+          <ion-button color="danger" (click)="removeOption()" [disabled]="(this.formBox.formValue.length <= 1)">Remove Option</ion-button>
           <ion-button color="success" (click)="addOption()">Add Option</ion-button>
           <ion-button color="primary" (click)="addFormBox()">Add Question</ion-button>
         </ion-item>
@@ -161,13 +161,13 @@
       <ion-card *ngIf="item.formType == 'Text'">
         <ion-item>
           <ion-label position="stacked">{{item.formQuestion}}</ion-label>
-          <ion-input type="text" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[0]"></ion-input>
+          <ion-input type="text" placeholder="{{item.formValue[0]}}" [(ngModel)]="item.formValue[0]"></ion-input>
         </ion-item>
       </ion-card>
       <ion-card *ngIf="item.formType == 'Number'">
           <ion-item>
             <ion-label position="stacked">{{item.formQuestion}}</ion-label>
-            <ion-input type="number" placeholder="{{item.formValue[1]}}" [(ngModel)]="item.formValue[0]"></ion-input>
+            <ion-input type="number" placeholder="{{item.formValue[0]}}" [(ngModel)]="item.formValue[0]"></ion-input>
           </ion-item>
       </ion-card>
       <ion-card *ngIf="item.formType == 'Radio'">

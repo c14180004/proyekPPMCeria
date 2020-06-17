@@ -20,7 +20,7 @@ export class IsiFormPage implements OnInit {
   formDoc : AngularFirestoreDocument;
   formDocData : Observable<DocumentData>;
   form : DocumentData;
-  formData : any[];
+  formAnswer : any[];
 
   answerID : string;
 
@@ -34,7 +34,7 @@ export class IsiFormPage implements OnInit {
   }
 
   ngOnInit() {
-    this.formData = []
+    this.formAnswer = []
   }
   ionViewWillEnter(){
     this.route.paramMap.subscribe(paramMap => {
@@ -46,11 +46,11 @@ export class IsiFormPage implements OnInit {
       this.formDocData = this.formDoc.valueChanges();
       this.formDocData.subscribe(formList =>{
         this.form = formList;
-        this.formData = []
+        this.formAnswer = []
         for(var i = 0;i<this.form.formList.length;i++){
-          this.formData.push({formType: this.form.formList[i].formType, question: this.form.formList[i].formQuestion,value: []});
+          this.formAnswer.push({value: []});
         }
-        console.log(this.formData);
+        console.log(this.formAnswer);
       })
       
       this.answerID = this.formID + "-" + this.user.getUsername();
@@ -66,13 +66,14 @@ export class IsiFormPage implements OnInit {
   }
 
   submit(){
-    const formData = this.formData;
+    const formAnswer = this.formAnswer;
 
     this.afstore.doc(`forms/${this.formID}`).update({
       formResponses: firestore.FieldValue.arrayUnion(this.answerID)
     })
     this.afstore.doc(`responses/${this.answerID}`).set({
-      formData,
+      form: this.formID,
+      formAnswer,
       respondent: this.user.getUsername()
     })
 
@@ -83,18 +84,18 @@ export class IsiFormPage implements OnInit {
 
   radioAnswer(index,event) {
     // console.log(event.detail.value);
-    this.formData[index].value= event.detail.value
+    this.formAnswer[index].value= event.detail.value
   }
 
   checkboxAnswer(index,event){
-    var cbAnswer = this.formData[index].value;
+    var cbAnswer = this.formAnswer[index].value;
     if(!cbAnswer.includes(event.detail.value)){
       cbAnswer.push(event.detail.value)
     }else{
       var cbAnswerI = cbAnswer.indexOf(event.detail.value);
       cbAnswer.splice(cbAnswerI,1)
     }
-    console.log(this.formData[index].value)
+    console.log(this.formAnswer[index].value)
   }
 
   async presentAlert(header: string, message: string) {

@@ -17,13 +17,13 @@
     <ion-card *ngIf="item.formType == 'Text'">
       <ion-item>
         <ion-label position="stacked">{{item.formQuestion}}</ion-label>
-        <ion-input type="text" placeholder="{{item.formValue[1]}}" [(ngModel)]="formData[j].value"></ion-input>
+        <ion-input type="text" placeholder="{{item.formValue[0]}}" [(ngModel)]="formAnswer[j].value"></ion-input>
       </ion-item>
     </ion-card>
     <ion-card *ngIf="item.formType == 'Number'">
         <ion-item>
           <ion-label position="stacked">{{item.formQuestion}}</ion-label>
-          <ion-input type="number" placeholder="{{item.formValue[1]}}" [(ngModel)]="formData[j].value"></ion-input>
+          <ion-input type="number" placeholder="{{item.formValue[0]}}" [(ngModel)]="formAnswer[j].value"></ion-input>
         </ion-item>
     </ion-card>
     <ion-card *ngIf="item.formType == 'Radio'">

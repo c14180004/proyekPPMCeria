@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DocumentData, AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { FormModel } from '../formModel.model';
 
 @Component({
   selector: 'app-response',
@@ -15,6 +16,11 @@ export class ResponsePage implements OnInit {
   responseDocData : Observable<DocumentData>;
 
   responseData : DocumentData;
+  
+  formDoc : AngularFirestoreDocument<FormModel>;
+  formDocData : Observable<FormModel>;
+
+  formData : FormModel;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +41,13 @@ export class ResponsePage implements OnInit {
       this.responseDocData = this.responseDoc.valueChanges();
       this.responseDocData.subscribe(response => {
         this.responseData = response;
+
+        this.formDoc = this.afstore.doc(`forms/${this.responseData.form}`);
+        this.formDocData = this.formDoc.valueChanges();
+
+        this.formDocData.subscribe(form => {
+          this.formData = form;
+        })
       })
       
     })
