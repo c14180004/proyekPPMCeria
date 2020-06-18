@@ -3,7 +3,14 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="tabs/forms"></ion-back-button>
     </ion-buttons>
+    
     <ion-title>Detail Form</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)='presentAlertDelete()'>
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -13,24 +20,31 @@
 
   <div *ngIf="(formDocData | async)">
 
-    <div class="ion-padding">
+    <ion-item lines="none">
+      <ion-button *ngIf="!preview" slot="end" color="warning" (click)="switchPreview()">Preview</ion-button>
+      <ion-button *ngIf="preview" slot="end" color="warning" (click)="switchPreview()">Responses</ion-button>
+    </ion-item>
+
+    <!-- Responses -->
+    <div *ngIf="!preview; else lookPreview"class="ion-padding-horizontal">
+
       <center>
         <ion-text color="medium">
           <p class="ion-no-margin">Title:</p>
         </ion-text>
         <h1 class="ion-no-margin ion-margin-bottom">{{this.formData.formTitle}}</h1>
-
+  
         <ion-text color="medium">
           <p class="ion-no-margin" color="medium">Description:</p>
         </ion-text>
         <h3 class="ion-no-margin ion-margin-bottom">{{this.formData.formDesc}}</h3>
-        
+  
         <ion-text color="medium">
           <p class="ion-no-margin">Form code:</p>
         </ion-text>
         <h5 class="ion-no-margin ion-margin-bottom">{{this.formID}}</h5>
-    </center>
-      
+      </center>
+  
       <ion-list class="ion-margin-top">
         <ion-list-header>
           <h5 class="ion-no-margin">
@@ -39,11 +53,13 @@
           &nbsp;&nbsp;
           <ion-badge color="primary">{{this.formData.formResponses.length}}</ion-badge>
         </ion-list-header>
-        
+  
         <app-loading *ngIf="!responseData"></app-loading>
-
-        <center><ion-label *ngIf="(responseData.length == 0)">Responses will be listed here.</ion-label></center>
-
+  
+        <center>
+          <ion-label *ngIf="(responseData.length == 0)">Responses will be listed here.</ion-label>
+        </center>
+  
         <ion-item *ngFor="let response of responseData; let i = index" (click)="clickResponse(this.responses[i])">
           <ion-label>
             <ion-row>Respondent:</ion-row>
@@ -52,8 +68,58 @@
         </ion-item>
   
       </ion-list>
+
     </div>
 
+    <!-- Preview -->
+    <ng-template #lookPreview>
+      
+      <ion-card color="tertiary">
+        <h1>{{formData.formTitle}}</h1>
+        <p>{{formData.formDesc}}</p>
+      </ion-card>
+      <div *ngFor="let item of formData.formList;let j = index">
+        <ion-card *ngIf="item.formType == 'Text'">
+          <ion-item>
+            <ion-label position="stacked">{{item.formQuestion}}</ion-label>
+            <ion-input type="text" placeholder="{{item.formValue[0]}}" disabled></ion-input>
+          </ion-item>
+        </ion-card>
+        <ion-card *ngIf="item.formType == 'Number'">
+            <ion-item>
+              <ion-label position="stacked">{{item.formQuestion}}</ion-label>
+              <ion-input type="number" placeholder="{{item.formValue[0]}}" disabled></ion-input>
+            </ion-item>
+        </ion-card>
+        <ion-card *ngIf="item.formType == 'Radio'">
+          <ion-list>
+            <ion-radio-group>
+              <ion-list-header>
+                <ion-label>{{item.formQuestion}}</ion-label>
+              </ion-list-header>
+              <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index; trackBy:trackByFn">
+                <ion-label>{{item.formValue[i]}}</ion-label>
+                <ion-radio slot="start" [(value)]="item.formValue[i]" disabled></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+        </ion-card>
+        <ion-card *ngIf="item.formType == 'Checkbox'">
+          <ion-list-header>
+            <ion-label>{{item.formQuestion}}</ion-label>
+          </ion-list-header>
+          <ion-list>
+            <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index;trackBy:trackByFn ">
+              <ion-label>{{item.formValue[i]}}</ion-label>
+              <ion-checkbox slot="start" [(value)]="item.formValue[i]" disabled></ion-checkbox>
+            </ion-item>
+          </ion-list>
+        </ion-card>
+      </div>
+      
+    </ng-template>
+
   </div>
+
 
 </ion-content>

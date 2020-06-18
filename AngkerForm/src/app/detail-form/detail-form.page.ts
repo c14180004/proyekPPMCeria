@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestoreDocument, DocumentData, AngularFirestore } from '@angular/fire/firestore';
+import { firestore } from 'firebase';
 import { Observable } from 'rxjs';
 import { FormModel } from '../formModel.model';
+import { UserService } from '../user.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-detail-form',
@@ -23,16 +26,20 @@ export class DetailFormPage implements OnInit {
   responseData : DocumentData[];
   responses : string[];
 
+  preview: boolean;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private afstore: AngularFirestore
+    private afstore: AngularFirestore,
+    public user: UserService,
+    public alert: AlertController
   ) {
-
+    
   }
 
   ngOnInit() {
-    
+    this.preview = false;
   }
 
   ionViewWillEnter(){
@@ -67,8 +74,63 @@ export class DetailFormPage implements OnInit {
     
   }
 
+  switchPreview(){
+    if(this.preview){
+      this.preview = false;
+    }else{
+      this.preview = true;
+    }
+  }
+
   clickResponse(id:string){
     this.router.navigate(['/response',id])
+  }
+
+  deleteForm(){
+    //Delete form responses
+    for (let i = 0; i < this.formData.formResponses.length; i++){
+      this.afstore.doc(`responses/${this.formData.formResponses[i]}`).delete();
+    }
+
+    //Delete form document
+    this.afstore.doc(`forms/${this.formID}`).delete();
+
+    //Remove from User's form list
+    this.afstore.doc(`users/${this.user.getUID()}`).update({
+      forms: firestore.FieldValue.arrayRemove(this.formID)
+    })
+
+    this.presentAlert("Success!", "Form has been deleted.");
+    
+    this.router.navigate(['/tabs/forms']);
+  }
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alert.create({
+      header,
+      message,
+      buttons: ["OK"]
+    })
+
+    await alert.present();
+  }
+
+  async presentAlertDelete() {
+    const alert = await this.alert.create({
+      header: 'Are you sure?',
+      message: 'Deleted forms cannot be recovered!',
+      buttons: [
+        "Cancel",
+        {
+          text: 'Delete',
+          handler: () => {
+            this.deleteForm();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
 }
