@@ -8,6 +8,8 @@ import { NewFormPageRoutingModule } from './new-form-routing.module';
 
 import { NewFormPage } from './new-form.page';
 
+import { FileSizeFormatPipe } from '../file-size-format.pipe';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +17,6 @@ import { NewFormPage } from './new-form.page';
     IonicModule,
     NewFormPageRoutingModule
   ],
-  declarations: [NewFormPage]
+  declarations: [NewFormPage,FileSizeFormatPipe]
 })
 export class NewFormPageModule {}

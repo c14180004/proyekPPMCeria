@@ -13,7 +13,7 @@ import { ResponsePage } from './response.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    ResponsePageRoutingModule
+    ResponsePageRoutingModule,
   ],
   declarations: [ResponsePage]
 })

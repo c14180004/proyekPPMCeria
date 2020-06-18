@@ -3,10 +3,13 @@ import { FormBox } from '../formBox.model';
 import { FormModel } from '../formModel.model';
 import { AlertController } from '@ionic/angular';
 import { UserService } from '../user.service';
-import { AngularFirestore } from '@angular/fire/firestore'
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore'
 import { AngularFireAuth } from '@angular/fire/auth';
 import { firestore } from 'firebase';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-form',
@@ -23,16 +26,29 @@ export class NewFormPage implements OnInit {
   cekForm: boolean;
   newForm: FormModel;
   formCount: number;
+  //upload image
+  task: AngularFireUploadTask;
+  percentage: Observable<number>;
+  snapshot: Observable<any>
+  UploadedFileURL: Observable<string>
+  fileName:string;
+  fileSize:number;
+  isUploading:boolean;
+  isUploaded:boolean;
+  private imageCollection: AngularFirestoreCollection<FormBox>;
 
   constructor(
     public afAuth: AngularFireAuth,
     public afstore: AngularFirestore,
     public user: UserService,
     public alert: AlertController,
-    public router : Router
+    public router: Router,
+    public storage: AngularFireStorage
   ) { }
   ngOnInit() {
     this.formCount = 0;
+    this.isUploading = false;
+    this.isUploaded = false;
     this.cekForm = false;
     this.preview = false;
     this.formType = "Text"
@@ -41,6 +57,51 @@ export class NewFormPage implements OnInit {
       formQuestion: "",
       formValue:[""]
     }
+  }
+  uploadFile(event: FileList){
+    const file = event.item(0);
+    if (file.type.split('/')[0] !== 'image') { 
+      console.error('unsupported file type :( ')
+      return;
+     }
+
+     this.isUploading = true;
+     this.isUploaded = false;
+     this.cekForm = false;
+     this.fileName = file.name;
+     const path = `imageStorage/${new Date().getTime()}_${file.name}`;
+     const fileRef = this.storage.ref(path);
+     this.task = this.storage.upload(path, file);
+     this.percentage = this.task.percentageChanges();
+     this.snapshot = this.task.snapshotChanges().pipe(
+       
+       finalize(() => {
+         this.UploadedFileURL = fileRef.getDownloadURL();
+         
+         this.UploadedFileURL.subscribe(resp=>{
+           this.addImagetoDB({
+            formType: "Image",
+            formQuestion: resp,
+            formValue:[""]
+           });
+           this.isUploading = false;
+           this.isUploaded = true;
+           this.cekForm = true;
+         },error=>{
+           console.error(error);
+         })
+       }),
+       tap(snap => {
+           this.fileSize = snap.totalBytes;
+       })
+     )
+  }
+
+  addImagetoDB(image: FormBox) {
+    this.formList.push(image);
+    console.log(this.formList)
+    this.onChange();
+    this.formCount = this.formCount + 1;
   }
   addFormBox(){
     this.cekForm = true;
