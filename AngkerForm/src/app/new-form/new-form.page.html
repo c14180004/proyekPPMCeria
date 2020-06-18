@@ -53,27 +53,31 @@
           <ion-radio-group>
             <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index; trackBy:trackByFn">
               <ion-radio slot="start" [(value)]="item.formValue[i]"></ion-radio><ion-item><ion-input type="text" placeholder="value" [(ngModel)] = "item.formValue[i]" value="{{item.formValue[i]}}" [ngModelOptions]="{standalone: true}"></ion-input></ion-item>
+              <ion-icon name="remove-outline" slot="end" (click)="removeListOption(j,i)"></ion-icon>
             </ion-item>
           </ion-radio-group>
           <ion-item lines="none">
-            <ion-button color="danger" (click)="removeListOption(j)" [disabled]="(this.formList[j].formValue.length <= 1)">Remove Option</ion-button>
-            <ion-button color="success" (click)="addListOption(j)">Add Option</ion-button>
-            <ion-button color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
+            <ion-icon slot="start" (click)="addListOption(j)" name="add-outline"></ion-icon>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-button slot="end" color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
           </ion-item>
         </ion-card>
         <ion-card *ngIf="item.formType == 'Checkbox'">
-          <ion-item>
+          <ion-item lines="none">
           <ion-input name="question{{formCount}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
           </ion-item>
           <ion-list>
             <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index;trackBy:trackByFn ">
               <ion-checkbox slot="start" [(value)]="item.formValue[i]"></ion-checkbox><ion-item><ion-input type="text" placeholder="value" [(ngModel)]="item.formValue[i]" [ngModelOptions]="{standalone: true}"></ion-input></ion-item>
+              <ion-icon name="remove-outline" slot="end" (click)="removeListOption(j,i)"></ion-icon>
             </ion-item>
           </ion-list>
           <ion-item lines="none">
-            <ion-button color="danger" (click)="removeListOption(j)" [disabled]="(this.formList[j].formValue.length <= 1)">Remove Option</ion-button>
-            <ion-button color="success" (click)="addListOption(j)">Add Option</ion-button>
-            <ion-button color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
+            <ion-icon slot="start" (click)="addListOption(j)" name="add-outline"></ion-icon>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-button slot="end" color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
           </ion-item>
         </ion-card>
       </div>
@@ -120,12 +124,14 @@
         <ion-radio-group>
           <ion-item lines="none" *ngFor="let itemValue of formBox.formValue;let i = index;trackBy:trackByFn ">
             <ion-radio slot="start" [(value)]="formBox.formValue[i]"></ion-radio><ion-item><ion-input type="text" placeholder="value" [(ngModel)]="formBox.formValue[i]" [ngModelOptions]="{standalone: true}"></ion-input></ion-item>
+            <ion-icon name="remove-outline" slot="end" (click)="removeOption(i)"></ion-icon>
           </ion-item>
         </ion-radio-group>
         <ion-item lines="none">
-          <ion-button color="danger" (click)="removeOption()" [disabled]="(this.formBox.formValue.length <= 1)">Remove Option</ion-button>
-          <ion-button color="success" (click)="addOption()">Add Option</ion-button>
-          <ion-button color="primary" (click)="addFormBox()">Add Question</ion-button>
+          <ion-icon slot="start" (click)="addOption()" name="add-outline"></ion-icon>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-button slot="end" color="primary" (click)="addFormBox()">Add Question</ion-button>
         </ion-item>
       </ion-card>
       <ion-card *ngIf="formType == 'Checkbox'">
@@ -135,13 +141,16 @@
         <ion-list>
           <ion-item lines="none" *ngFor="let itemValue of formBox.formValue;let i = index;trackBy:trackByFn ">
             <ion-checkbox slot="start" [(value)]="formBox.formValue[i]"></ion-checkbox><ion-item><ion-input type="text" placeholder="value" [(ngModel)]="formBox.formValue[i]" [ngModelOptions]="{standalone: true}"></ion-input></ion-item>
+            <ion-icon name="remove-outline" slot="end" (click)="removeOption(i)"></ion-icon>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon slot="start" (click)="addOption()" name="add-outline"></ion-icon>
           </ion-item>
         </ion-list>
         <ion-item lines="none">
-          <ion-button color="danger" (click)="removeOption()" [disabled]="(this.formBox.formValue.length <= 1)">Remove Option</ion-button>
-          <ion-button color="success" (click)="addOption()">Add Option</ion-button>
-          <ion-button color="primary" (click)="addFormBox()">Add Question</ion-button>
+          <ion-button slot="end" color="primary" (click)="addFormBox()">Add Question</ion-button>
         </ion-item>
+        
       </ion-card>
     </div>
     <ion-button type="submit" expand="block" color="secondary" [disabled]="(!form.valid || !cekForm)">Create Form</ion-button>

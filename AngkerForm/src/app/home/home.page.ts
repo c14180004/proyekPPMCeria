@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { AngularFirestore, DocumentData, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Router, ActivationEnd } from '@angular/router';
+import { Action } from 'rxjs/internal/scheduler/Action';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -11,12 +13,13 @@ import { Router } from '@angular/router';
 })
 export class HomePage {
   formCollection : AngularFirestoreCollection
+  formDoc : AngularFirestoreDocument;
   formCollectionData : Observable<DocumentData>;
   forms : DocumentData[];
   formsID : Observable<DocumentData>;
   formsIdData : string[];
-
-  constructor(private afstore: AngularFirestore, private router : Router) {
+  searchInput : string = "";
+  constructor(private afstore: AngularFirestore, private router : Router,public alert: AlertController) {
     this.formCollection = afstore.collection('forms');
 
     this.formCollectionData = this.formCollection.snapshotChanges().pipe(
@@ -32,5 +35,28 @@ export class HomePage {
   
   clickForm(id:string){
     this.router.navigate(['/isi-form',id])
+  }
+
+  search(){
+    if(this.searchInput != ""){
+      this.formDoc = this.afstore.doc(`forms/${this.searchInput}`);
+      this.formDoc.valueChanges().subscribe(action =>{
+        if(action){
+          this.router.navigate(['/isi-form',this.searchInput])
+        }else{
+          this.presentAlert("Error!", "Form code not valid");
+        }
+      })      
+    }
+    
+  }
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alert.create({
+      header,
+      message,
+      buttons: ["OK"]
+    })
+
+    await alert.present();
   }
 }

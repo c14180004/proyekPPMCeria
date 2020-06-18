@@ -9,22 +9,28 @@
 <ion-content [fullscreen]="true">
 
   <app-loading *ngIf="!formCollectionData"></app-loading>
-  
+  <ion-item class="searchbar">
+    <ion-input placeholder="Enter Form Code" [(ngModel)]="searchInput" (keyup.enter)="search()"></ion-input>
+    <ion-icon name="search-outline" (click)=search()></ion-icon>
+  </ion-item>
   <div id="forms">
-    <ion-list>
-
-      <ion-item  class="forms" *ngFor="let form of (formCollectionData | async); let i = index" (click) = "clickForm(form.id)">
-        <ion-label>
-          <ion-row>
-            {{form.formTitle}}
-          </ion-row>
-          <ion-row>
-            {{form.formDesc}}
-          </ion-row>
-        </ion-label>
-      </ion-item>
-
-    </ion-list>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" class="ion-no-padding" *ngFor="let form of (formCollectionData | async); let i = index">
+          <ion-card class="forms" (click) = "clickForm(form.id)">
+            <ion-label>
+              <ion-row class="title">
+                <h2><b>{{form.formTitle}}</b></h2>
+              </ion-row>
+              <ion-row class="description">
+                <p class="desc">{{form.formDesc}}</p>
+                <p class="fade"></p>
+              </ion-row>
+            </ion-label>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

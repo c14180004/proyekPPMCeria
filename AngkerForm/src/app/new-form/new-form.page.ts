@@ -61,14 +61,20 @@ export class NewFormPage implements OnInit {
   addOption(){
     this.formBox.formValue.push("");
   }
-  removeOption(){
-    this.formBox.formValue.pop();
+  removeOption(index){
+    if(this.formBox.formValue.length > 1){
+      this.formBox.formValue.splice(index,1);
+    }else{
+
+    }
   }
-  addListOption(index){
-    this.formList[index].formValue.push("");
+  addListOption(jndex){
+    this.formList[jndex].formValue.push("");
   }
-  removeListOption(index){
-    this.formList[index].formValue.pop();
+  removeListOption(jndex,index){
+    if(this.formList[jndex].formValue.length > 1){
+      this.formList[jndex].formValue.splice(index,1);
+    }
   }
   trackByFn(index: any, item: any) {
     return index;
