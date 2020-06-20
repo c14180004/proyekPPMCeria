@@ -79,11 +79,11 @@ export class NewFormPage implements OnInit {
          this.UploadedFileURL = fileRef.getDownloadURL();
          
          this.UploadedFileURL.subscribe(resp=>{
-           this.addImagetoDB({
+          this.formBox = {
             formType: "Image",
             formQuestion: resp,
-            formValue:[""]
-           });
+            formValue:[path]
+          }
            this.isUploading = false;
            this.isUploaded = true;
            this.cekForm = true;
@@ -96,27 +96,51 @@ export class NewFormPage implements OnInit {
        })
      )
   }
-
-  addImagetoDB(image: FormBox) {
-    this.formList.push(image);
-    console.log(this.formList)
-    this.onChange();
-    this.formCount = this.formCount + 1;
-  }
   addFormBox(){
-    this.cekForm = true;
+    this.isUploading = false;
+    this.isUploaded = false;
+    this.cekForm = false;
     this.formBox.formType = this.formType;
     this.formList.push(this.formBox);
     
-    this.onChange();
+    this.onChange("2");
 
     this.formCount = this.formCount + 1;
     console.log(this.formList);
+    for(var i = 0;i<this.formList.length;i++){
+      if(this.formList[i].formType != "Image"){
+        this.cekForm = true;
+      }
+    }
+  }
+  deleteImage(){
+    const fileRef = this.storage.ref(this.formBox.formValue[0]);
+    try{
+      fileRef.delete();
+      console.log("delete Image success");
+    }catch{
+      console.log("delete Image failed")
+    }
+    this.isUploading = false;
+    this.isUploaded = false;
   }
   removeFormBox(index){
+    if(this.formList[index].formType == "Image"){
+      const fileRef = this.storage.ref(this.formList[index].formValue[0]);
+      try{
+        fileRef.delete();
+        console.log("delete Image success");
+      }catch{
+        console.log("delete Image failed")
+      }
+      
+    }
     this.formList.splice(index,1);
-    if(this.formList.length == 0){
-      this.cekForm = false;
+    this.cekForm = false;
+    for(var i = 0;i<this.formList.length;i++){
+      if(this.formList[i].formType != "Image"){
+        this.cekForm = true;
+      }
     }
   }
   addOption(){
@@ -147,7 +171,21 @@ export class NewFormPage implements OnInit {
       this.preview = true;
     }
   }
-  onChange(){
+  onChange(cek){
+   
+    if(this.formBox.formType == "Image" && cek == "1"){
+      const fileRef = this.storage.ref(this.formBox.formValue[0]);
+      try{
+        fileRef.delete();
+        console.log("delete Image success");
+      }catch{
+        console.log("no Image to delete");
+      }
+    }else{
+      console.log("no Image to delete")
+    }
+    this.isUploading = false;
+    this.isUploaded = false;
     this.formBox = {
       formType: this.formType,
       formQuestion: "",

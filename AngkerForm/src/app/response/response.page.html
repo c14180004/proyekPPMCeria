@@ -44,6 +44,11 @@
             <ion-checkbox slot="start" [(value)]="item.formValue[i]" [checked]="(responseData.formAnswer[j].value.includes(item.formValue[i]))" disabled></ion-checkbox>
           </ion-item>
       </ion-card>
+      <ion-card *ngIf="item.formType == 'Image'">
+        <ion-card-content>
+            <ion-img [src]="item.formQuestion"></ion-img>
+        </ion-card-content>
+      </ion-card>
     </div>
 
 

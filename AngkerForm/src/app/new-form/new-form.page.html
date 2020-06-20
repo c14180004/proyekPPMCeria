@@ -26,7 +26,7 @@
       <div *ngFor="let item of formList;let j = index">
         <ion-card *ngIf="item.formType == 'Text'">
           <ion-item>
-          <ion-input name="question{{formCount}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
+          <ion-input name="question{{formCount}}{{j}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-input type="text" placeholder="placeholder" [(ngModel)]="item.formValue[0]" [ngModelOptions]="{standalone: true}"></ion-input>
@@ -37,7 +37,7 @@
         </ion-card>
         <ion-card *ngIf="item.formType == 'Number'">
             <ion-item>
-              <ion-input name="question{{formCount}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
+              <ion-input name="question{{formCount}}{{j}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
             </ion-item>
             <ion-item>
               <ion-input type="text" placeholder="placeholder" [(ngModel)]="item.formValue[0]" [ngModelOptions]="{standalone: true}"></ion-input>
@@ -48,7 +48,7 @@
         </ion-card>
         <ion-card *ngIf="item.formType == 'Radio'">
           <ion-item>
-          <ion-input name="question{{formCount}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
+          <ion-input name="question{{formCount}}{{j}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
           </ion-item>
           <ion-radio-group>
             <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index; trackBy:trackByFn">
@@ -62,10 +62,10 @@
           <ion-item lines="none">
             <ion-button slot="end" color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
           </ion-item>
-        </ion-card>
+        </ion-card> 
         <ion-card *ngIf="item.formType == 'Checkbox'">
           <ion-item lines="none">
-          <ion-input name="question{{formCount}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
+          <ion-input name="question{{formCount}}{{j}}" [(ngModel)]="item.formQuestion" type="text" placeholder="Question" value="item.formQuestion" required></ion-input>
           </ion-item>
           <ion-list>
             <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index;trackBy:trackByFn ">
@@ -80,11 +80,19 @@
             <ion-button slot="end" color="secondary" (click)="removeFormBox(j)">Remove Question</ion-button>
           </ion-item>
         </ion-card>
+        <ion-card *ngIf="item.formType == 'Image'">
+          <ion-card-content>
+              <ion-img [src]="item.formQuestion"></ion-img>
+          </ion-card-content>
+          <ion-item lines="none">
+            <ion-button slot="end" color="secondary" (click)="removeFormBox(j)">Remove Image</ion-button>
+          </ion-item>
+        </ion-card>
       </div>
     <!-- select form type -->
     <ion-card>
       <ion-label>Question Type</ion-label>
-      <ion-select [(ngModel)]="formType" interface="text" (ionChange)="onChange()"  [ngModelOptions]="{standalone: true}">
+      <ion-select [(ngModel)]="formType" interface="text" (ionChange)="onChange(1)"  [ngModelOptions]="{standalone: true}">
         <ion-select-option value="Text">Text</ion-select-option>
         <ion-select-option value="Number">Number</ion-select-option>
         <ion-select-option value="Radio">Radio</ion-select-option>
@@ -191,9 +199,15 @@
         <ion-card class="ion-text-center" *ngIf="!isUploading && isUploaded">
           <ion-card-content>
             <div *ngIf="UploadedFileURL | async as url">
-              <ion-img [src]="url"></ion-img>
+              <ion-img [src]="formBox.formQuestion"></ion-img>
             </div>
           </ion-card-content>
+          <ion-item lines="none">
+            <div slot="end">
+              <ion-button (click)="deleteImage()" color="danger">Cancel</ion-button>
+              <ion-button color="primary" (click)="addFormBox()">Add Image</ion-button>
+            </div>
+          </ion-item>
         </ion-card>
       </div>
     </div>
@@ -246,6 +260,11 @@
             <ion-checkbox slot="start" [(value)]="item.formValue[i]"></ion-checkbox>
           </ion-item>
         </ion-list>
+      </ion-card>
+      <ion-card *ngIf="item.formType == 'Image'">
+        <ion-card-content>
+            <ion-img [src]="item.formQuestion"></ion-img>
+        </ion-card-content>
       </ion-card>
     </div>
   </ng-template>

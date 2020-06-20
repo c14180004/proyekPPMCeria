@@ -23,7 +23,7 @@ export class IsiFormPage implements OnInit {
   formAnswer : any[];
 
   answerID : string;
-
+  cekForm : boolean;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -35,6 +35,7 @@ export class IsiFormPage implements OnInit {
 
   ngOnInit() {
     this.formAnswer = []
+    this.cekForm = false;
   }
   ionViewWillEnter(){
     this.route.paramMap.subscribe(paramMap => {
@@ -48,7 +49,11 @@ export class IsiFormPage implements OnInit {
         this.form = formList;
         this.formAnswer = []
         for(var i = 0;i<this.form.formList.length;i++){
-          this.formAnswer.push({value: []});
+          if(this.form.formList[i].formType != "Image"){
+            this.formAnswer.push({value: []});
+          }else{
+            this.formAnswer.push({value: ["image"]})
+          }
         }
         console.log(this.formAnswer);
       })
@@ -85,6 +90,7 @@ export class IsiFormPage implements OnInit {
   radioAnswer(index,event) {
     // console.log(event.detail.value);
     this.formAnswer[index].value= event.detail.value
+    this.cekFormValid();
   }
 
   checkboxAnswer(index,event){
@@ -96,6 +102,17 @@ export class IsiFormPage implements OnInit {
       cbAnswer.splice(cbAnswerI,1)
     }
     console.log(this.formAnswer[index].value)
+    this.cekFormValid();
+  }
+
+  cekFormValid(){
+    this.cekForm = true;
+    for(var i = 0;i<this.formAnswer.length;i++){
+      console.log(this.formAnswer[i].value);
+      if(this.formAnswer[i].value.length == 0){
+        this.cekForm = false;
+      }
+    }
   }
 
   async presentAlert(header: string, message: string) {

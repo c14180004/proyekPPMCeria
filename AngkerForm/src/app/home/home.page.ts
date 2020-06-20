@@ -46,7 +46,8 @@ export class HomePage {
         }else{
           this.presentAlert("Error!", "Form code not valid");
         }
-      })      
+      })  
+      this.searchInput = "";    
     }
     
   }

@@ -115,6 +115,11 @@
             </ion-item>
           </ion-list>
         </ion-card>
+        <ion-card *ngIf="item.formType == 'Image'">
+          <ion-card-content>
+              <ion-img [src]="item.formQuestion"></ion-img>
+          </ion-card-content>
+        </ion-card>
       </div>
       
     </ng-template>
