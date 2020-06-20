@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="tabs/forms"></ion-back-button>
+      <ion-back-button defaultHref="tabs/forms" (click)="deleteAllImages()"></ion-back-button>
     </ion-buttons>
     <ion-title>New Form</ion-title>
   </ion-toolbar>
@@ -89,6 +89,13 @@
           </ion-item>
         </ion-card>
       </div>
+
+      <ion-item-divider>
+        <ion-label>
+          Add Question
+        </ion-label>
+      </ion-item-divider>
+
     <!-- select form type -->
     <ion-card>
       <ion-label>Question Type</ion-label>
@@ -211,7 +218,7 @@
         </ion-card>
       </div>
     </div>
-    <ion-button type="submit" expand="block" color="secondary" [disabled]="(!form.valid || !cekForm)">Create Form</ion-button>
+    <ion-button type="submit" expand="block" color="secondary" [disabled]="(!form.valid || !cekForm ||isUploading)">Create Form</ion-button>
   </form>
 </div>
   

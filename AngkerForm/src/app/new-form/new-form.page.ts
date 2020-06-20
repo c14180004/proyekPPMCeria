@@ -10,6 +10,7 @@ import { firestore } from 'firebase';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
+import { exception } from 'console';
 
 @Component({
   selector: 'app-new-form',
@@ -26,6 +27,10 @@ export class NewFormPage implements OnInit {
   cekForm: boolean;
   newForm: FormModel;
   formCount: number;
+  
+  isSubmitting: boolean;
+  isCancelling: boolean;
+
   //upload image
   task: AngularFireUploadTask;
   percentage: Observable<number>;
@@ -45,7 +50,12 @@ export class NewFormPage implements OnInit {
     public router: Router,
     public storage: AngularFireStorage
   ) { }
+
   ngOnInit() {
+    
+  }
+
+  ionViewWillEnter() {
     this.formCount = 0;
     this.isUploading = false;
     this.isUploaded = false;
@@ -57,7 +67,21 @@ export class NewFormPage implements OnInit {
       formQuestion: "",
       formValue:[""]
     }
+    this.isSubmitting = false;
+    this.isCancelling = false;
   }
+
+  ionViewWillLeave() {
+    if (!this.isSubmitting)
+    {
+      this.isCancelling = true;
+      this.deleteAllImages();
+    }
+    
+    // Hapus image yg sdh diupload tapi tidak diadd
+    this.deleteImage();
+  }
+
   uploadFile(event: FileList){
     const file = event.item(0);
     if (file.type.split('/')[0] !== 'image') { 
@@ -67,7 +91,6 @@ export class NewFormPage implements OnInit {
 
      this.isUploading = true;
      this.isUploaded = false;
-     this.cekForm = false;
      this.fileName = file.name;
      const path = `imageStorage/${new Date().getTime()}_${file.name}`;
      const fileRef = this.storage.ref(path);
@@ -86,7 +109,12 @@ export class NewFormPage implements OnInit {
           }
            this.isUploading = false;
            this.isUploaded = true;
-           this.cekForm = true;
+
+          if (this.isCancelling)
+          {
+            this.deleteImage();
+          }
+
          },error=>{
            console.error(error);
          })
@@ -124,6 +152,41 @@ export class NewFormPage implements OnInit {
     this.isUploading = false;
     this.isUploaded = false;
   }
+
+  deleteAllImages(){
+    try{
+      console.log("task cancelled");
+      this.task.cancel();
+    }
+    catch{
+      console.log("failed to cancel task");
+    }
+
+    if (this.formBox.formType == "Image")
+    {
+      this.deleteImage();
+    }
+
+    for (let i = 0; i < this.formList.length; i++) {
+      
+      if(this.formList[i].formType == "Image"){
+        const fileRef = this.storage.ref(this.formList[i].formValue[0]);
+        try{
+          fileRef.delete();
+          console.log("delete Image success");
+        }catch{
+          console.log("delete Image failed")
+        }
+        
+      }
+      else
+      {
+        continue;
+      }
+
+    }
+  }
+
   removeFormBox(index){
     if(this.formList[index].formType == "Image"){
       const fileRef = this.storage.ref(this.formList[index].formValue[0]);
@@ -198,6 +261,7 @@ export class NewFormPage implements OnInit {
     }
   }
   createForm(){
+    this.isSubmitting = true;
     console.log(this.user.getUFAI());
     
     const formCode = this.user.getUsername() + "_" + this.user.getUFAI();

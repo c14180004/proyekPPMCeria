@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestoreDocument, DocumentData, AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { firestore } from 'firebase';
 import { Observable } from 'rxjs';
 import { FormModel } from '../formModel.model';
@@ -33,7 +34,8 @@ export class DetailFormPage implements OnInit {
     private router: Router,
     private afstore: AngularFirestore,
     public user: UserService,
-    public alert: AlertController
+    public alert: AlertController,
+    public storage: AngularFireStorage
   ) {
     
   }
@@ -90,6 +92,26 @@ export class DetailFormPage implements OnInit {
     //Delete form responses
     for (let i = 0; i < this.formData.formResponses.length; i++){
       this.afstore.doc(`responses/${this.formData.formResponses[i]}`).delete();
+    }
+
+    //Delete images in the form
+    for (let i = 0; i < this.formData.formList.length; i++) {
+      
+      if(this.formData.formList[i].formType == "Image"){
+        const fileRef = this.storage.ref(this.formData.formList[i].formValue[0]);
+        try{
+          fileRef.delete();
+          console.log("delete Image success");
+        }catch{
+          console.log("delete Image failed")
+        }
+        
+      }
+      else
+      {
+        continue;
+      }
+
     }
 
     //Delete form document
