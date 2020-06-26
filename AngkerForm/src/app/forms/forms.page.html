@@ -27,6 +27,11 @@
       </ion-row>
     </ion-grid>
   </div>
+  <div class="contain" *ngIf="(userDocData | async)">
+    <div class='contain' *ngIf="userForms.length==0">
+      <h1>Your forms will be listed here</h1>
+  </div>
+  </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button [routerLink]="'/new-form'">

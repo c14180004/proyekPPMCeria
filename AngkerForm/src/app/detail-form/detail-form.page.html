@@ -84,16 +84,36 @@
             <ion-label position="stacked">{{item.formQuestion}}</ion-label>
             <ion-input type="text" placeholder="{{item.formValue[0]}}" disabled></ion-input>
           </ion-item>
+          <div *ngIf="item.isQuiz==true">
+            <ion-item>
+              <ion-label position="stacked">Answer</ion-label>
+              <ion-input type='number' placeholder='quiz answer' [(ngModel)]="item.formAnswer[0]" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Score</ion-label>
+              <ion-input type='number' placeholder='quiz score' [(ngModel)]="item.formScore" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+          </div>
         </ion-card>
         <ion-card *ngIf="item.formType == 'Number'">
             <ion-item>
               <ion-label position="stacked">{{item.formQuestion}}</ion-label>
               <ion-input type="number" placeholder="{{item.formValue[0]}}" disabled></ion-input>
             </ion-item>
+            <div *ngIf="item.isQuiz==true">
+              <ion-item>
+                <ion-label position="stacked">Answer</ion-label>
+                <ion-input type='number' placeholder='quiz answer' [(ngModel)]="item.formAnswer[0]" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Score</ion-label>
+                <ion-input type='number' placeholder='quiz score' [(ngModel)]="item.formScore" [ngModelOptions]="{standalone: true}"></ion-input>
+              </ion-item>
+            </div>
         </ion-card>
         <ion-card *ngIf="item.formType == 'Radio'">
           <ion-list>
-            <ion-radio-group>
+            <ion-radio-group [(ngModel)]="item.formAnswer[0]">
               <ion-list-header>
                 <ion-label>{{item.formQuestion}}</ion-label>
               </ion-list-header>
@@ -103,6 +123,12 @@
               </ion-item>
             </ion-radio-group>
           </ion-list>
+          <div *ngIf="item.isQuiz==true">
+            <ion-item>
+              <ion-label position="stacked">Score</ion-label>
+              <ion-input type='number' placeholder='quiz score' [(ngModel)]="item.formScore" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+          </div>
         </ion-card>
         <ion-card *ngIf="item.formType == 'Checkbox'">
           <ion-list-header>
@@ -114,6 +140,12 @@
               <ion-checkbox slot="start" [(value)]="item.formValue[i]" disabled></ion-checkbox>
             </ion-item>
           </ion-list>
+          <div *ngIf="item.isQuiz==true">
+            <ion-item>
+              <ion-label position="stacked">Score</ion-label>
+              <ion-input type='number' placeholder='quiz score' [(ngModel)]="item.formScore" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+          </div>
         </ion-card>
         <ion-card *ngIf="item.formType == 'Image'">
           <ion-card-content>

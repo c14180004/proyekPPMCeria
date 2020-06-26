@@ -21,13 +21,16 @@ export class ResponsePage implements OnInit {
   formDocData : Observable<FormModel>;
 
   formData : FormModel;
-
+  formTotalScore:number;
+  formMaxScore:number;
+  formScores : number[];
   constructor(
     private route: ActivatedRoute,
     private afstore: AngularFirestore
   ) { }
 
   ngOnInit() {
+
   }
 
   ionViewWillEnter(){
@@ -44,9 +47,72 @@ export class ResponsePage implements OnInit {
 
         this.formDoc = this.afstore.doc(`forms/${this.responseData.form}`);
         this.formDocData = this.formDoc.valueChanges();
-
+        this.formScores=[];
         this.formDocData.subscribe(form => {
+
           this.formData = form;
+          this.formMaxScore=0;
+          for(let i=0;i<this.formData.formList.length;i++)
+          {
+            this.formMaxScore+=this.formData.formList[i].formScore;
+            if(this.formData.formList[i].isQuiz)
+            {
+              if(this.formData.formList[i].formType!="Checkbox")
+              {
+                if(this.formData.formList[i].formAnswer[0]==this.responseData.formAnswer[i].value)
+                {
+                  this.formScores.push(this.formData.formList[i].formScore);
+                }
+                else
+                {
+                  this.formScores.push(0);
+                }
+              }
+              // checkbox
+              else
+              {
+                let cor=true;
+                if(this.formData.formList[i].formAnswer.length==0 && this.responseData.formAnswer[i].value.length==0)
+                {
+                  cor=true;
+                }
+                else if(this.formData.formList[i].formAnswer.length==0 && this.responseData.formAnswer[i].value.length>=0)
+                {
+                  cor=false;
+                }
+                else
+                {
+                  for(let j=0;j<this.formData.formList[i].formAnswer.length;j++)
+                  {
+                    if(!this.responseData.formAnswer[i].value.includes(this.formData.formList[i].formAnswer[j]))
+                    {
+                      cor=false;     
+                      break;            
+                    }
+                  }
+                }
+              
+                if(cor==false)
+                {
+                  this.formScores.push(0);
+                }
+                else
+                {
+                  this.formScores.push(this.formData.formList[i].formScore);
+                }
+              }
+            }
+            else
+            {
+              this.formScores.push(0);
+            }
+          }
+          this.formTotalScore=0;
+          for(let i=0;i<this.formScores.length;i++)
+          {
+            this.formTotalScore+=this.formScores[i];
+          }
+        
         })
       })
       

@@ -27,7 +27,7 @@ export class NewFormPage implements OnInit {
   cekForm: boolean;
   newForm: FormModel;
   formCount: number;
-  
+  quiz:boolean;
   isSubmitting: boolean;
   isCancelling: boolean;
 
@@ -65,10 +65,14 @@ export class NewFormPage implements OnInit {
     this.formBox = {
       formType: "Text",
       formQuestion: "",
-      formValue:[""]
+      formValue:[""],
+      formAnswer:[""],
+      formScore:0,
+      isQuiz:false
     }
     this.isSubmitting = false;
     this.isCancelling = false;
+    this.quiz=false;
   }
 
   ionViewWillLeave() {
@@ -105,7 +109,10 @@ export class NewFormPage implements OnInit {
           this.formBox = {
             formType: "Image",
             formQuestion: resp,
-            formValue:[path]
+            formValue:[path],
+            formAnswer:[""],
+            formScore:0,
+            isQuiz:false
           }
            this.isUploading = false;
            this.isUploaded = true;
@@ -208,20 +215,34 @@ export class NewFormPage implements OnInit {
   }
   addOption(){
     this.formBox.formValue.push("");
+    if(this.formBox.formType=="Checkbox")
+    {
+      this.formBox.formAnswer.push("false");
+    }
   }
   removeOption(index){
     if(this.formBox.formValue.length > 1){
       this.formBox.formValue.splice(index,1);
-    }else{
-
+      if(this.formBox.formType=="Checkbox")
+      {
+        this.formBox.formAnswer.splice(index,1);
+      }
     }
   }
   addListOption(jndex){
     this.formList[jndex].formValue.push("");
+    if(this.formList[jndex].formType=="Checkbox")
+    {
+      this.formList[jndex].formAnswer.push("false");
+    }
   }
   removeListOption(jndex,index){
     if(this.formList[jndex].formValue.length > 1){
       this.formList[jndex].formValue.splice(index,1);
+      if(this.formList[jndex].formType=="Checkbox")
+      {
+        this.formList[jndex].formAnswer.splice(index,1);
+      }
     }
   }
   trackByFn(index: any, item: any) {
@@ -252,15 +273,44 @@ export class NewFormPage implements OnInit {
     this.formBox = {
       formType: this.formType,
       formQuestion: "",
-      formValue:[""]
+      formValue:[""],
+      formAnswer:[""],
+      formScore:0,
+      isQuiz:false
     }
 
     if (this.formBox.formType == "Radio" || this.formBox.formType == "Checkbox")
     {
       this.formBox.formValue = ["", ""];
     }
+    if(this.formBox.formType == "Checkbox")
+    {
+      this.formBox.formAnswer=["false","false"];
+    }
+
   }
   createForm(){
+    for(var i=0;i<this.formList.length;i++)
+    {
+    
+      if(this.formList[i].formType == "Checkbox")
+      {
+        let temp=[];
+        for(var j=0;j<this.formList[i].formAnswer.length;j++)
+        {
+          if(this.formList[i].formAnswer[j].toString()=="true")
+          {
+            temp.push(this.formList[i].formValue[j]);
+          }
+        }
+        this.formList[i].formAnswer=temp;
+      }
+     if(!this.formList[i].isQuiz)
+     {
+       this.formList[i].formAnswer=[];
+       this.formList[i].formScore=0;
+     }
+    }
     this.isSubmitting = true;
     console.log(this.user.getUFAI());
     
@@ -282,5 +332,23 @@ export class NewFormPage implements OnInit {
 
     this.afstore.doc(`forms/${formCode}`).set(this.newForm)
     this.router.navigate(['./tabs/forms'])
+  }
+  switchquiz()
+  {
+    if(this.quiz==false)
+    {
+      this.quiz=true;
+    }
+    else{
+      this.quiz=false;
+    }
+  }
+  test()
+  {
+    console.log(this.formBox.formAnswer);
+  }
+  check2(i)
+  {
+    console.log(this.formList[i].formAnswer);
   }
 }
