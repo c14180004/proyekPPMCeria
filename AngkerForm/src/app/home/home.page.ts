@@ -20,7 +20,10 @@ export class HomePage {
   formsIdData : string[];
   searchInput : string = "";
   constructor(private afstore: AngularFirestore, private router : Router,public alert: AlertController) {
-    this.formCollection = afstore.collection('forms');
+    
+  }
+  ionViewWillEnter(){
+    this.formCollection = this.afstore.collection('forms');
 
     this.formCollectionData = this.formCollection.snapshotChanges().pipe(
       map(action =>{
@@ -31,8 +34,8 @@ export class HomePage {
         })
       })
     )
+    this.searchInput = "";
   }
-  
   clickForm(id:string){
     this.router.navigate(['/isi-form',id])
   }
@@ -41,13 +44,13 @@ export class HomePage {
     if(this.searchInput != ""){
       this.formDoc = this.afstore.doc(`forms/${this.searchInput}`);
       this.formDoc.valueChanges().subscribe(action =>{
+        console.log(action);
         if(action){
           this.router.navigate(['/isi-form',this.searchInput])
         }else{
           this.presentAlert("Error!", "Form code not valid");
         }
       })  
-      this.searchInput = "";    
     }
     
   }
