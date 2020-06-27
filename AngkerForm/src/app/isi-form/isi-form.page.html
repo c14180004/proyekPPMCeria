@@ -15,23 +15,27 @@
   </ion-card>
   <div *ngFor="let item of form.formList;let j = index">
     <ion-card *ngIf="item.formType == 'Text'">
-      <ion-item>
+      <ion-item lines="none">
         <ion-note *ngIf="item.isQuiz" style='font-size:75%;' slot="end">Skor : {{item.formScore}}</ion-note>
-        <ion-label position="stacked">{{item.formQuestion}}</ion-label>
+        <ion-label class="ion-text-wrap">{{item.formQuestion}}</ion-label>
+      </ion-item>
+      <ion-item>
         <ion-input type="text" placeholder="{{item.formValue[0]}}" (ionChange)="cekFormValid()" [(ngModel)]="formAnswer[j].value"></ion-input>
       </ion-item>
     </ion-card>
     <ion-card *ngIf="item.formType == 'Number'">
-        <ion-item>
+        <ion-item lines="none">
           <ion-note *ngIf="item.isQuiz" style='font-size:75%;' slot="end">Skor : {{item.formScore}}</ion-note>
-          <ion-label position="stacked">{{item.formQuestion}}</ion-label>
+          <ion-label class="ion-text-wrap">{{item.formQuestion}}</ion-label>
+        </ion-item>
+        <ion-item>
           <ion-input type="number" placeholder="{{item.formValue[0]}}" (ionChange)="cekFormValid()" [(ngModel)]="formAnswer[j].value"></ion-input>
         </ion-item>
     </ion-card>
     <ion-card *ngIf="item.formType == 'Radio'">
         <ion-item lines="none">
           <ion-note *ngIf="item.isQuiz" style='font-size:75%;' slot="end">Skor : {{item.formScore}}</ion-note>
-          <ion-label>{{item.formQuestion}}</ion-label>
+          <ion-label class="ion-text-wrap">{{item.formQuestion}}</ion-label>
         </ion-item>
         <ion-radio-group (ionChange)="radioAnswer(j,$event)">
           <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index; trackBy:trackByFn">
@@ -43,7 +47,7 @@
     <ion-card *ngIf="item.formType == 'Checkbox'">
         <ion-item lines="none">
           <ion-note *ngIf="item.isQuiz" style='font-size:75%;' slot="end">Skor : {{item.formScore}}</ion-note>
-          <ion-label>{{item.formQuestion}}</ion-label>
+          <ion-label class="ion-text-wrap">{{item.formQuestion}}</ion-label>
         </ion-item>
         <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index;trackBy:trackByFn ">
           <ion-label>{{item.formValue[i]}}</ion-label>
