@@ -16,18 +16,23 @@
   <div *ngFor="let item of form.formList;let j = index">
     <ion-card *ngIf="item.formType == 'Text'">
       <ion-item>
+        <ion-note *ngIf="item.isQuiz" style='font-size:75%;' slot="end">Skor : {{item.formScore}}</ion-note>
         <ion-label position="stacked">{{item.formQuestion}}</ion-label>
         <ion-input type="text" placeholder="{{item.formValue[0]}}" (ionChange)="cekFormValid()" [(ngModel)]="formAnswer[j].value"></ion-input>
       </ion-item>
     </ion-card>
     <ion-card *ngIf="item.formType == 'Number'">
         <ion-item>
+          <ion-note *ngIf="item.isQuiz" style='font-size:75%;' slot="end">Skor : {{item.formScore}}</ion-note>
           <ion-label position="stacked">{{item.formQuestion}}</ion-label>
           <ion-input type="number" placeholder="{{item.formValue[0]}}" (ionChange)="cekFormValid()" [(ngModel)]="formAnswer[j].value"></ion-input>
         </ion-item>
     </ion-card>
     <ion-card *ngIf="item.formType == 'Radio'">
-        <ion-label>{{item.formQuestion}}</ion-label>
+        <ion-item lines="none">
+          <ion-note *ngIf="item.isQuiz" style='font-size:75%;' slot="end">Skor : {{item.formScore}}</ion-note>
+          <ion-label>{{item.formQuestion}}</ion-label>
+        </ion-item>
         <ion-radio-group (ionChange)="radioAnswer(j,$event)">
           <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index; trackBy:trackByFn">
             <ion-label>{{item.formValue[i]}}</ion-label>
@@ -36,7 +41,10 @@
         </ion-radio-group>
     </ion-card>
     <ion-card *ngIf="item.formType == 'Checkbox'">
-        <ion-label>{{item.formQuestion}}</ion-label>
+        <ion-item lines="none">
+          <ion-note *ngIf="item.isQuiz" style='font-size:75%;' slot="end">Skor : {{item.formScore}}</ion-note>
+          <ion-label>{{item.formQuestion}}</ion-label>
+        </ion-item>
         <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index;trackBy:trackByFn ">
           <ion-label>{{item.formValue[i]}}</ion-label>
           <ion-checkbox slot="start" [(value)]="item.formValue[i]" (ionChange)="checkboxAnswer(j,$event)"></ion-checkbox>

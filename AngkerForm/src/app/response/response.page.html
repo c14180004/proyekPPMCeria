@@ -19,21 +19,21 @@
     <div *ngFor="let item of formData.formList; let j = index">
       <ion-card *ngIf="item.formType == 'Text'">
         <ion-item>
-          <ion-note style='font-size:75%;' slot="end">Skor : {{formScores[j]}}/{{item.formScore}}</ion-note>
+          <ion-note *ngIf="item.isQuiz" style='font-size:75%;' slot="end">Skor : {{formScores[j]}}/{{item.formScore}}</ion-note>
           <ion-label position="stacked">{{item.formQuestion}}</ion-label>
           <ion-input type="text" value="{{responseData.formAnswer[j].value}}" disabled></ion-input>
         </ion-item>
       </ion-card>
       <ion-card *ngIf="item.formType == 'Number'">
           <ion-item>
-            <ion-note style='font-size:75%;' slot="end">Skor : {{formScores[j]}}/{{item.formScore}}</ion-note>
+            <ion-note *ngIf="item.isQuiz" style='font-size:75%;' slot="end">Skor : {{formScores[j]}}/{{item.formScore}}</ion-note>
             <ion-label position="stacked">{{item.formQuestion}}</ion-label>
             <ion-input type="number" value="{{responseData.formAnswer[j].value}}" disabled></ion-input>
           </ion-item>
       </ion-card>
       <ion-card *ngIf="item.formType == 'Radio'">
         <ion-item lines="none">
-          <ion-note style='font-size:75%;' slot="end">Skor : {{formScores[j]}}/{{item.formScore}}</ion-note>
+          <ion-note *ngIf="item.isQuiz" style='font-size:75%;' slot="end">Skor : {{formScores[j]}}/{{item.formScore}}</ion-note>
           <ion-label>{{item.formQuestion}}</ion-label>
         </ion-item>
           <ion-radio-group value="{{responseData.formAnswer[j].value}}">
@@ -45,7 +45,7 @@
       </ion-card>
       <ion-card *ngIf="item.formType == 'Checkbox'">
         <ion-item lines="none">
-          <ion-note style='font-size:75%;' slot="end">Skor : {{formScores[j]}}/{{item.formScore}}</ion-note>
+          <ion-note *ngIf="item.isQuiz" style='font-size:75%;' slot="end">Skor : {{formScores[j]}}/{{item.formScore}}</ion-note>
           <ion-label>{{item.formQuestion}}</ion-label>
         </ion-item>
         <ion-item lines="none" *ngFor="let itemValue of item.formValue;let i = index;">

@@ -72,23 +72,12 @@ export class ResponsePage implements OnInit {
               else
               {
                 let cor=true;
-                if(this.formData.formList[i].formAnswer.length==0 && this.responseData.formAnswer[i].value.length==0)
+                for(let j=0; j<this.responseData.formAnswer[i].value.length; j++)
                 {
-                  cor=true;
-                }
-                else if(this.formData.formList[i].formAnswer.length==0 && this.responseData.formAnswer[i].value.length>=0)
-                {
-                  cor=false;
-                }
-                else
-                {
-                  for(let j=0;j<this.formData.formList[i].formAnswer.length;j++)
+                  if(!this.formData.formList[i].formAnswer.includes(this.responseData.formAnswer[i].value[j]))
                   {
-                    if(!this.responseData.formAnswer[i].value.includes(this.formData.formList[i].formAnswer[j]))
-                    {
-                      cor=false;     
-                      break;            
-                    }
+                    cor=false;
+                    break;
                   }
                 }
               
