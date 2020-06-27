@@ -9,16 +9,26 @@
 <!-- form edit -->
 <ion-content>
   <div *ngIf="!preview; else lookPreview">
-    <form #form="ngForm" (ngSubmit)="createForm()">
+    <form #form="ngForm" (ngSubmit)="checkPromoCode()">
       <ion-item lines="none">
         <ion-button slot="end" color="warning" (click)="switchPreview()">Preview</ion-button>
       </ion-item>
       <ion-card color="tertiary">
         <ion-item color="tertiary">
+          <ion-label position="stacked">Title</ion-label>
           <ion-input name="title"type="text" placeholder="Title" [(ngModel)]="formTitle" required></ion-input>
         </ion-item>
         <ion-item color="tertiary">
+          <ion-label position="stacked">Description</ion-label>
           <ion-textarea name="description" placeholder="Enter more description here..." [(ngModel)]="formDesc" required autosize></ion-textarea>
+        </ion-item>
+        <ion-item color="tertiary">
+          <ion-label position="stacked">Form Code (Nickname)</ion-label>
+          <ion-input name="formCode" placeholder="Enter form code (nickname) here" [(ngModel)]="formCode" required autosize></ion-input>
+        </ion-item>
+        <ion-item color="tertiary">
+          <ion-label position="stacked">Due date</ion-label>
+          <ion-datetime name="formDeadline" [(ngModel)]="formDeadline" max="2100"></ion-datetime>
         </ion-item>
       </ion-card>
       

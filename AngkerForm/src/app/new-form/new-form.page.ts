@@ -4,7 +4,7 @@ import { FormModel } from '../formModel.model';
 import { AlertController } from '@ionic/angular';
 import { UserService } from '../user.service';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore'
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore'
 import { AngularFireAuth } from '@angular/fire/auth';
 import { firestore } from 'firebase';
 import { Router } from '@angular/router';
@@ -27,9 +27,11 @@ export class NewFormPage implements OnInit {
   cekForm: boolean;
   newForm: FormModel;
   formCount: number;
-  quiz:boolean;
   isSubmitting: boolean;
   isCancelling: boolean;
+
+  formCode: string;
+  formDeadline: Date;
 
   //upload image
   task: AngularFireUploadTask;
@@ -41,6 +43,8 @@ export class NewFormPage implements OnInit {
   isUploading:boolean;
   isUploaded:boolean;
   private imageCollection: AngularFirestoreCollection<FormBox>;
+
+  formDoc : AngularFirestoreDocument;
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -72,7 +76,7 @@ export class NewFormPage implements OnInit {
     }
     this.isSubmitting = false;
     this.isCancelling = false;
-    this.quiz=false;
+    this.formCode = "";
   }
 
   ionViewWillLeave() {
@@ -313,36 +317,54 @@ export class NewFormPage implements OnInit {
     }
     this.isSubmitting = true;
     console.log(this.user.getUFAI());
-    
-    const formCode = this.user.getUsername() + "_" + this.user.getUFAI();
-    
+
+    let str = new Date(this.formDeadline).toDateString();
+
     this.newForm = {
       author: this.user.getUsername(),
       formTitle: this.formTitle,
       formDesc: this.formDesc,
       formList: this.formList,
-      formResponses: []
+      formResponses: [],
+      formDeadline: str
     }
 
     this.user.updateUFAI();
     
     this.afstore.doc(`users/${this.user.getUID()}`).update({
-      forms: firestore.FieldValue.arrayUnion(formCode)
+      forms: firestore.FieldValue.arrayUnion(this.formCode)
     })
 
-    this.afstore.doc(`forms/${formCode}`).set(this.newForm)
-    this.router.navigate(['./tabs/forms'])
+    this.afstore.doc(`forms/${this.formCode}`).set(this.newForm);
+    this.router.navigate(['./tabs/forms']);
   }
-  switchquiz()
-  {
-    if(this.quiz==false)
-    {
-      this.quiz=true;
-    }
-    else{
-      this.quiz=false;
-    }
+
+  checkPromoCode(){
+    this.formDoc = this.afstore.doc(`forms/${this.formCode}`);
+      this.formDoc.get().subscribe(action =>{
+        if(action.exists){
+          //Sudah ada
+          this.presentAlert("Error!", "Form code (nickname) is not available!");
+          return;
+        }
+        else
+        {
+          this.createForm();
+          return;
+        }
+    });
   }
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alert.create({
+      header,
+      message,
+      buttons: ["OK"]
+    })
+
+    await alert.present();
+  }
+
   test()
   {
     console.log(this.formBox.formAnswer);

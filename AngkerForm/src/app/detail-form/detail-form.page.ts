@@ -69,7 +69,6 @@ export class DetailFormPage implements OnInit {
             this.responseData[i] = response;
           })
         }
-
       })
       
     })

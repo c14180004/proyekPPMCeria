@@ -6,4 +6,5 @@ export interface FormModel{
     formDesc: string;
     formList: FormBox[];
     formResponses: string[];
+    formDeadline : string;
 }

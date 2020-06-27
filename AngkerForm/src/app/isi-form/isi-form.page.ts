@@ -56,6 +56,16 @@ export class IsiFormPage implements OnInit {
           }
         }
         console.log(this.formAnswer);
+
+        let currDate = new Date();
+        currDate.setHours(0, 0, 0, 0);
+        let formDate = new Date(this.form.formDeadline);
+        if (formDate < currDate)
+        {
+          this.presentAlert("Closed Form", "Form is no longer accepting responses");
+          this.router.navigate(['/tabs/home']);
+          return;
+        }
       })
       
       this.answerID = this.formID + "-" + this.user.getUsername();
